@@ -1,0 +1,88 @@
+{
+  "id": 2,
+  "name": "\"aurelia-pal-browser\"",
+  "kind": 2,
+  "kindString": "Module",
+  "flags": {},
+  "children": [
+    {
+      "id": 4,
+      "name": "DOM",
+      "kind": 32,
+      "kindString": "Variable",
+      "flags": {
+        "isExported": true
+      },
+      "type": {
+        "type": "instrinct",
+        "name": "any"
+      }
+    },
+    {
+      "id": 3,
+      "name": "FEATURE",
+      "kind": 32,
+      "kindString": "Variable",
+      "flags": {
+        "isExported": true
+      },
+      "type": {
+        "type": "instrinct",
+        "name": "any"
+      }
+    },
+    {
+      "id": 5,
+      "name": "PLATFORM",
+      "kind": 32,
+      "kindString": "Variable",
+      "flags": {
+        "isExported": true
+      },
+      "type": {
+        "type": "instrinct",
+        "name": "any"
+      }
+    },
+    {
+      "id": 6,
+      "name": "initialize",
+      "kind": 64,
+      "kindString": "Function",
+      "flags": {
+        "isExported": true
+      },
+      "signatures": [
+        {
+          "id": 7,
+          "name": "initialize",
+          "kind": 4096,
+          "kindString": "Call signature",
+          "flags": {},
+          "type": {
+            "type": "instrinct",
+            "name": "any"
+          }
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "title": "Variables",
+      "kind": 32,
+      "children": [
+        4,
+        3,
+        5
+      ]
+    },
+    {
+      "title": "Functions",
+      "kind": 64,
+      "children": [
+        6
+      ]
+    }
+  ]
+}
