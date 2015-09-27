@@ -28,8 +28,8 @@ function fixHTMLTemplateElement(template) {
   let content = template.content = document.createDocumentFragment();
   let child;
 
-  while(child = template.firstChild){
-    if (child.tagName === 'TEMPLATE')
+  while (child = template.firstChild) {
+    if (child.tagName === 'TEMPLATE') {
       child = fixHTMLTemplateElement(child);
     } else if (isSVGTemplate(child)) {
       child = fixSVGTemplateElement(child);
@@ -41,10 +41,8 @@ function fixHTMLTemplateElement(template) {
   return template;
 }
 
-FEATURE.ensureHTMLTemplateElement = function(template) {
-  if(FEATURE.htmlTemplateElement) {
-    return template;
-  }
-
-  return fixHTMLTemplateElement(template);
-};
+if (FEATURE.htmlTemplateElement) {
+  FEATURE.ensureHTMLTemplateElement = function(template) { return template; };
+} else {
+  FEATURE.ensureHTMLTemplateElement = fixHTMLTemplateElement;
+}

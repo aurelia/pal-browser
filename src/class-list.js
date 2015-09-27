@@ -1,244 +1,175 @@
 /*
- * classList polyfill.  Forked from https://github.com/eligrey/classList.js
- * and maintained at https://github.com/jdanyow/classList.js
+ * classList polyfill. Forked from https://github.com/eligrey/classList.js
  *
- *******************************************************************************
- *
- * classList.js: Cross-browser full element.classList implementation.
- * 1.1.20150312
- *
- * By Eli Grey, http://eligrey.com
+ * Original impelementation by Eli Grey, http://eligrey.com
  * License: Dedicated to the public domain.
  *   See https://github.com/eligrey/classList.js/blob/master/LICENSE.md
  */
 
-/*global self, document, DOMException */
-
-/*! @source http://purl.eligrey.com/github/classList.js/blob/master/classList.js */
-
-//if ("document" in self) {
-
 // Full polyfill for browsers with no classList support
 // Including IE < Edge missing SVGElement.classList
-if (!("classList" in document.createElement("_"))
-	|| document.createElementNS && !("classList" in document.createElementNS("http://www.w3.org/2000/svg","g"))) {
+if (!('classList' in document.createElement('_')) || document.createElementNS && !('classList' in document.createElementNS('http://www.w3.org/2000/svg', 'g'))) {
+  let protoProp = 'prototype';
+  let strTrim = String.prototype.trim;
+  let arrIndexOf = Array.prototype.indexOf;
+  let emptyArray = [];
 
-(function (view) {
+  let DOMEx = function(type, message) {
+    this.name = type;
+    this.code = DOMException[type];
+    this.message = message;
+  };
 
-"use strict";
+  let checkTokenAndGetIndex = function(classList, token) {
+    if (token === '') {
+      throw new DOMEx('SYNTAX_ERR', 'An invalid or illegal string was specified');
+    }
 
-if (!('Element' in view)) return;
+    if (/\s/.test(token)) {
+      throw new DOMEx('INVALID_CHARACTER_ERR', 'String contains an invalid character');
+    }
 
-var
-	  classListProp = "classList"
-	, protoProp = "prototype"
-	, elemCtrProto = view.Element[protoProp]
-	, objCtr = Object
-	, strTrim = String[protoProp].trim || function () {
-		return this.replace(/^\s+|\s+$/g, "");
-	}
-	, arrIndexOf = Array[protoProp].indexOf || function (item) {
-		var
-			  i = 0
-			, len = this.length
-		;
-		for (; i < len; i++) {
-			if (i in this && this[i] === item) {
-				return i;
-			}
-		}
-		return -1;
-	}
-	// Vendors: please allow content code to instantiate DOMExceptions
-	, DOMEx = function (type, message) {
-		this.name = type;
-		this.code = DOMException[type];
-		this.message = message;
-	}
-	, checkTokenAndGetIndex = function (classList, token) {
-		if (token === "") {
-			throw new DOMEx(
-				  "SYNTAX_ERR"
-				, "An invalid or illegal string was specified"
-			);
-		}
-		if (/\s/.test(token)) {
-			throw new DOMEx(
-				  "INVALID_CHARACTER_ERR"
-				, "String contains an invalid character"
-			);
-		}
-		return arrIndexOf.call(classList, token);
-	}
-	, ClassList = function (elem) {
-		var
-			  trimmedClasses = strTrim.call(elem.getAttribute("class") || "")
-			, classes = trimmedClasses ? trimmedClasses.split(/\s+/) : []
-			, i = 0
-			, len = classes.length
-		;
-		for (; i < len; i++) {
-			this.push(classes[i]);
-		}
-		this._updateClassName = function () {
-			elem.setAttribute("class", this.toString());
-		};
-	}
-	, classListProto = ClassList[protoProp] = []
-	, classListGetter = function () {
-		return new ClassList(this);
-	}
-;
-// Most DOMException implementations don't allow calling DOMException's toString()
-// on non-DOMExceptions. Error's toString() is sufficient here.
-DOMEx[protoProp] = Error[protoProp];
-classListProto.item = function (i) {
-	return this[i] || null;
-};
-classListProto.contains = function (token) {
-	token += "";
-	return checkTokenAndGetIndex(this, token) !== -1;
-};
-classListProto.add = function () {
-	var
-		  tokens = arguments
-		, i = 0
-		, l = tokens.length
-		, token
-		, updated = false
-	;
-	do {
-		token = tokens[i] + "";
-		if (checkTokenAndGetIndex(this, token) === -1) {
-			this.push(token);
-			updated = true;
-		}
-	}
-	while (++i < l);
+    return arrIndexOf.call(classList, token);
+  };
 
-	if (updated) {
-		this._updateClassName();
-	}
-};
-classListProto.remove = function () {
-	var
-		  tokens = arguments
-		, i = 0
-		, l = tokens.length
-		, token
-		, updated = false
-		, index
-	;
-	do {
-		token = tokens[i] + "";
-		index = checkTokenAndGetIndex(this, token);
-		while (index !== -1) {
-			this.splice(index, 1);
-			updated = true;
-			index = checkTokenAndGetIndex(this, token);
-		}
-	}
-	while (++i < l);
+  let ClassList = function(elem) {
+    let trimmedClasses = strTrim.call(elem.getAttribute('class') || '');
+    let classes = trimmedClasses ? trimmedClasses.split(/\s+/) : emptyArray;
 
-	if (updated) {
-		this._updateClassName();
-	}
-};
-classListProto.toggle = function (token, force) {
-	token += "";
+    for (let i = 0, ii = classes.length; i < ii; ++i) {
+      this.push(classes[i]);
+    }
 
-	var
-		  result = this.contains(token)
-		, method = result ?
-			force !== true && "remove"
-		:
-			force !== false && "add"
-	;
+    this._updateClassName = function() {
+      elem.setAttribute('class', this.toString());
+    };
+  };
 
-	if (method) {
-		this[method](token);
-	}
+  let classListProto = ClassList[protoProp] = [];
 
-	if (force === true || force === false) {
-		return force;
-	} else {
-		return !result;
-	}
-};
-classListProto.toString = function () {
-	return this.join(" ");
-};
+  // Most DOMException implementations don't allow calling DOMException's toString()
+  // on non-DOMExceptions. Error's toString() is sufficient here.
+  DOMEx[protoProp] = Error[protoProp];
 
-if (objCtr.defineProperty) {
-	var classListPropDesc = {
-		  get: classListGetter
-		, enumerable: true
-		, configurable: true
-	};
-	try {
-		objCtr.defineProperty(elemCtrProto, classListProp, classListPropDesc);
-	} catch (ex) { // IE 8 doesn't support enumerable:true
-		if (ex.number === -0x7FF5EC54) {
-			classListPropDesc.enumerable = false;
-			objCtr.defineProperty(elemCtrProto, classListProp, classListPropDesc);
-		}
-	}
-} else if (objCtr[protoProp].__defineGetter__) {
-	elemCtrProto.__defineGetter__(classListProp, classListGetter);
-}
+  classListProto.item = function(i) {
+    return this[i] || null;
+  };
 
-}(self));
+  classListProto.contains = function(token) {
+    token += '';
+    return checkTokenAndGetIndex(this, token) !== -1;
+  };
 
+  classListProto.add = function() {
+    let tokens = arguments;
+    let i = 0;
+    let ii = tokens.length;
+    let token;
+    let updated = false;
+
+    do {
+      token = tokens[i] + '';
+      if (checkTokenAndGetIndex(this, token) === -1) {
+        this.push(token);
+        updated = true;
+      }
+    } while (++i < ii);
+
+    if (updated) {
+      this._updateClassName();
+    }
+  };
+
+  classListProto.remove = function() {
+    let tokens = arguments;
+    let i = 0;
+    let ii = tokens.length;
+    let token;
+    let updated = false;
+    let index;
+
+    do {
+      token = tokens[i] + '';
+      index = checkTokenAndGetIndex(this, token);
+      while (index !== -1) {
+        this.splice(index, 1);
+        updated = true;
+        index = checkTokenAndGetIndex(this, token);
+      }
+    } while (++i < ii);
+
+    if (updated) {
+      this._updateClassName();
+    }
+  };
+
+  classListProto.toggle = function(token, force) {
+    token += '';
+
+    let result = this.contains(token);
+    let method = result ? force !== true && 'remove' : force !== false && 'add';
+
+    if (method) {
+      this[method](token);
+    }
+
+    if (force === true || force === false) {
+      return force;
+    }
+
+    return !result;
+  };
+
+  classListProto.toString = function() {
+    return this.join(' ');
+  };
+
+  Object.defineProperty(Element.prototype, 'classList', {
+    get: function() {
+      return new ClassList(this);
+    },
+    enumerable: true,
+    configurable: true
+  });
 } else {
-// There is full or partial native classList support, so just check if we need
-// to normalize the add/remove and toggle APIs.
+  // There is full or partial native classList support, so just check if we need
+  // to normalize the add/remove and toggle APIs.
+  let testElement = document.createElement('_');
+  testElement.classList.add('c1', 'c2');
 
-(function () {
-	"use strict";
+  // Polyfill for IE 10/11 and Firefox <26, where classList.add and
+  // classList.remove exist but support only one argument at a time.
+  if (!testElement.classList.contains('c2')) {
+    let createMethod = function(method) {
+      let original = DOMTokenList.prototype[method];
 
-	var testElement = document.createElement("_");
+      DOMTokenList.prototype[method] = function(token) {
+        for (let i = 0, ii = arguments.length; i < ii; ++i) {
+          token = arguments[i];
+          original.call(this, token);
+        }
+      };
+    };
 
-	testElement.classList.add("c1", "c2");
+    createMethod('add');
+    createMethod('remove');
+  }
 
-	// Polyfill for IE 10/11 and Firefox <26, where classList.add and
-	// classList.remove exist but support only one argument at a time.
-	if (!testElement.classList.contains("c2")) {
-		var createMethod = function(method) {
-			var original = DOMTokenList.prototype[method];
+  testElement.classList.toggle('c3', false);
 
-			DOMTokenList.prototype[method] = function(token) {
-				var i, len = arguments.length;
+  // Polyfill for IE 10 and Firefox <24, where classList.toggle does not
+  // support the second argument.
+  if (testElement.classList.contains('c3')) {
+    let _toggle = DOMTokenList.prototype.toggle;
 
-				for (i = 0; i < len; i++) {
-					token = arguments[i];
-					original.call(this, token);
-				}
-			};
-		};
-		createMethod('add');
-		createMethod('remove');
-	}
+    DOMTokenList.prototype.toggle = function(token, force) {
+      if (1 in arguments && !this.contains(token) === !force) {
+        return force;
+      }
 
-	testElement.classList.toggle("c3", false);
+      return _toggle.call(this, token);
+    };
+  }
 
-	// Polyfill for IE 10 and Firefox <24, where classList.toggle does not
-	// support the second argument.
-	if (testElement.classList.contains("c3")) {
-		var _toggle = DOMTokenList.prototype.toggle;
-
-		DOMTokenList.prototype.toggle = function(token, force) {
-			if (1 in arguments && !this.contains(token) === !force) {
-				return force;
-			} else {
-				return _toggle.call(this, token);
-			}
-		};
-
-	}
-
-	testElement = null;
-}());
-
+  testElement = null;
 }
-
-//}

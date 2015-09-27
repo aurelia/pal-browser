@@ -1,10 +1,10 @@
-export let FEATURE = {};
+export const FEATURE = {};
 
-FEATURE.shadowDOM = (function(){
-    return !!HTMLElement.prototype.createShadowRoot;
+FEATURE.shadowDOM = (function() {
+  return !!HTMLElement.prototype.createShadowRoot;
 })();
 
-FEATURE.htmlTemplateElement = (function(){
+FEATURE.htmlTemplateElement = (function() {
   return 'content' in document.createElement('template');
 })();
 
@@ -13,25 +13,26 @@ FEATURE.objectObserve = (function detectObjectObserve() {
     return false;
   }
 
-  var records = [];
+  let records = [];
 
   function callback(recs) {
     records = recs;
   }
 
-  var test = {};
+  let test = {};
   Object.observe(test, callback);
   test.id = 1;
   test.id = 2;
   delete test.id;
 
   Object.deliverChangeRecords(callback);
-  if (records.length !== 3)
+  if (records.length !== 3) {
     return false;
+  }
 
-  if (records[0].type != 'add' ||
-      records[1].type != 'update' ||
-      records[2].type != 'delete') {
+  if (records[0].type !== 'add' ||
+      records[1].type !== 'update' ||
+      records[2].type !== 'delete') {
     return false;
   }
 
@@ -45,23 +46,24 @@ FEATURE.arrayObserve = (function detectArrayObserve() {
     return false;
   }
 
-  var records = [];
+  let records = [];
 
   function callback(recs) {
     records = recs;
   }
 
-  var arr = [];
+  let arr = [];
   Array.observe(arr, callback);
   arr.push(1, 2);
   arr.length = 0;
 
   Object.deliverChangeRecords(callback);
-  if (records.length !== 2)
+  if (records.length !== 2) {
     return false;
+  }
 
-  if (records[0].type != 'splice' ||
-      records[1].type != 'splice') {
+  if (records[0].type !== 'splice' ||
+      records[1].type !== 'splice') {
     return false;
   }
 

@@ -1,9 +1,8 @@
 import {FEATURE} from './feature';
 
-let shadowPoly = window.ShadowDOMPolyfill || null
+let shadowPoly = window.ShadowDOMPolyfill || null;
 
-export let DOM = {
-  document: document,
+export const DOM = {
   Element: Element,
   boundary: 'aurelia-dom-boundary',
   adoptNode(node: Node) {
@@ -25,7 +24,7 @@ export let DOM = {
     return new (window.MutationObserver || window.WebKitMutationObserver)(callback);
   },
   createCustomEvent(eventType: string, options: Object): CustomEvent {
-    return new window.CustomEvent(eventType,options);
+    return new window.CustomEvent(eventType, options);
   },
   getComputedStyle(element: Element) {
     return window.getComputedStyle(element);
@@ -37,8 +36,8 @@ export let DOM = {
     return document.querySelectorAll(query);
   },
   nextElementSibling(element: Node): Element {
-    if (element.nextElementSibling){ return element.nextElementSibling; }
-    do { element = element.nextSibling }
+    if (element.nextElementSibling) { return element.nextElementSibling; }
+    do { element = element.nextSibling; }
     while (element && element.nodeType !== 1);
     return element;
   },
@@ -47,32 +46,32 @@ export let DOM = {
     parser.innerHTML = markup;
 
     let temp = parser.firstElementChild;
-    if(!temp || temp.nodeName !== 'TEMPLATE'){
+    if (!temp || temp.nodeName !== 'TEMPLATE') {
       throw new Error(`Template markup must be wrapped in a <template> element e.g. <template> <!-- markup here --> </template>`);
     }
 
     return FEATURE.ensureHTMLTemplateElement(temp);
   },
   replaceNode(newNode: Node, node: Node, parentNode: Node): void {
-    if(node.parentNode){
+    if (node.parentNode) {
       node.parentNode.replaceChild(newNode, node);
-    }else if(shadowPoly){ //HACK: IE template element and shadow dom polyfills not quite right...
+    } else if (shadowPoly !== null) { //HACK: IE template element and shadow dom polyfills not quite right...
       shadowPoly.unwrap(parentNode).replaceChild(
         shadowPoly.unwrap(newNode),
         shadowPoly.unwrap(node)
         );
-    }else{ //HACK: same as above
+    } else { //HACK: same as above
       parentNode.replaceChild(newNode, node);
     }
   },
   removeNode(node: Node, parentNode: Node): void {
-    if(node.parentNode){
+    if (node.parentNode) {
       node.parentNode.removeChild(node);
-    }else if(shadowPoly){ //HACK: IE template element and shadow dom polyfills not quite right...
+    } else if (shadowPoly !== null) { //HACK: IE template element and shadow dom polyfills not quite right...
       shadowPoly.unwrap(parentNode).removeChild(
         shadowPoly.unwrap(node)
         );
-    }else{ //HACK: same as above
+    } else { //HACK: same as above
       parentNode.removeChild(node);
     }
   },
@@ -83,9 +82,9 @@ export let DOM = {
 
     destination = destination || document.head;
 
-    if(prepend && destination.childNodes.length > 0){
+    if (prepend && destination.childNodes.length > 0) {
       destination.insertBefore(node, destination.childNodes[0]);
-    }else{
+    } else {
       destination.appendChild(node);
     }
 
