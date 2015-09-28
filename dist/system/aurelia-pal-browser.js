@@ -413,8 +413,7 @@ System.register(['aurelia-pal'], function (_export) {
       PLATFORM = {
         location: window.location,
         history: window.history,
-        XMLHttpRequest: XMLHttpRequest,
-        findModuleForExport: function findModuleForExport(exp) {}
+        XMLHttpRequest: XMLHttpRequest
       };
 
       _export('PLATFORM', PLATFORM);

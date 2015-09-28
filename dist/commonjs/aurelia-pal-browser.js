@@ -403,8 +403,7 @@ exports.DOM = DOM;
 var PLATFORM = {
   location: window.location,
   history: window.history,
-  XMLHttpRequest: XMLHttpRequest,
-  findModuleForExport: function findModuleForExport(exp) {}
+  XMLHttpRequest: XMLHttpRequest
 };
 
 exports.PLATFORM = PLATFORM;
