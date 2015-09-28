@@ -5,6 +5,8 @@ System.register(['aurelia-pal'], function (_export) {
 
   _export('initialize', initialize);
 
+  function test() {}
+
   function isSVGTemplate(el) {
     return el.tagName === 'template' && el.namespaceURI === 'http://www.w3.org/2000/svg';
   }
@@ -54,6 +56,17 @@ System.register(['aurelia-pal'], function (_export) {
       initializePAL = _aureliaPal.initializePAL;
     }],
     execute: function () {
+      if (!test.name) {
+        Object.defineProperty(Function.prototype, 'name', {
+          get: function get() {
+            var name = this.toString().match(/^\s*function\s*(\S*)\s*\(/)[1];
+
+            Object.defineProperty(this, 'name', { value: name });
+            return name;
+          }
+        });
+      }
+
       if (!('classList' in document.createElement('_')) || document.createElementNS && !('classList' in document.createElementNS('http://www.w3.org/2000/svg', 'g'))) {
         (function () {
           var protoProp = 'prototype';
