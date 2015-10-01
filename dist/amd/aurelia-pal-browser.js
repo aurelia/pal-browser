@@ -300,13 +300,24 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
     var child = undefined;
 
     while (child = template.firstChild) {
-      if (child.tagName === 'TEMPLATE') {
-        child = fixHTMLTemplateElement(child);
-      } else if (isSVGTemplate(child)) {
-        child = fixSVGTemplateElement(child);
-      }
-
       content.appendChild(child);
+    }
+
+    return template;
+  }
+
+  function fixHTMLTemplateElementRoot(template) {
+    var content = fixHTMLTemplateElement(template).content;
+    var childTemplates = content.querySelectorAll('template');
+
+    for (var i = 0, ii = childTemplates.length; i < ii; ++i) {
+      var child = childTemplates[i];
+
+      if (isSVGTemplate(child)) {
+        fixSVGTemplateElement(child);
+      } else {
+        fixHTMLTemplateElement(child);
+      }
     }
 
     return template;
@@ -317,7 +328,7 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
       return template;
     };
   } else {
-    FEATURE.ensureHTMLTemplateElement = fixHTMLTemplateElement;
+    FEATURE.ensureHTMLTemplateElement = fixHTMLTemplateElementRoot;
   }
 
   var shadowPoly = window.ShadowDOMPolyfill || null;

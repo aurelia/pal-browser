@@ -317,13 +317,24 @@ function fixHTMLTemplateElement(template) {
   let child;
 
   while (child = template.firstChild) {
-    if (child.tagName === 'TEMPLATE') {
-      child = fixHTMLTemplateElement(child);
-    } else if (isSVGTemplate(child)) {
-      child = fixSVGTemplateElement(child);
-    }
-
     content.appendChild(child);
+  }
+
+  return template;
+}
+
+function fixHTMLTemplateElementRoot(template) {
+  let content = fixHTMLTemplateElement(template).content;
+  let childTemplates = content.querySelectorAll('template');
+
+  for (let i = 0, ii = childTemplates.length; i < ii; ++i) {
+    let child = childTemplates[i];
+
+    if (isSVGTemplate(child)) {
+      fixSVGTemplateElement(child);
+    } else {
+      fixHTMLTemplateElement(child);
+    }
   }
 
   return template;
@@ -332,7 +343,7 @@ function fixHTMLTemplateElement(template) {
 if (FEATURE.htmlTemplateElement) {
   FEATURE.ensureHTMLTemplateElement = function(template) { return template; };
 } else {
-  FEATURE.ensureHTMLTemplateElement = fixHTMLTemplateElement;
+  FEATURE.ensureHTMLTemplateElement = fixHTMLTemplateElementRoot;
 }
 
 let shadowPoly = window.ShadowDOMPolyfill || null;

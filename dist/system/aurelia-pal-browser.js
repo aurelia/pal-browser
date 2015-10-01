@@ -35,13 +35,24 @@ System.register(['aurelia-pal'], function (_export) {
     var child = undefined;
 
     while (child = template.firstChild) {
-      if (child.tagName === 'TEMPLATE') {
-        child = fixHTMLTemplateElement(child);
-      } else if (isSVGTemplate(child)) {
-        child = fixSVGTemplateElement(child);
-      }
-
       content.appendChild(child);
+    }
+
+    return template;
+  }
+
+  function fixHTMLTemplateElementRoot(template) {
+    var content = fixHTMLTemplateElement(template).content;
+    var childTemplates = content.querySelectorAll('template');
+
+    for (var i = 0, ii = childTemplates.length; i < ii; ++i) {
+      var child = childTemplates[i];
+
+      if (isSVGTemplate(child)) {
+        fixSVGTemplateElement(child);
+      } else {
+        fixHTMLTemplateElement(child);
+      }
     }
 
     return template;
@@ -329,7 +340,7 @@ System.register(['aurelia-pal'], function (_export) {
           return template;
         };
       } else {
-        FEATURE.ensureHTMLTemplateElement = fixHTMLTemplateElement;
+        FEATURE.ensureHTMLTemplateElement = fixHTMLTemplateElementRoot;
       }
 
       shadowPoly = window.ShadowDOMPolyfill || null;
