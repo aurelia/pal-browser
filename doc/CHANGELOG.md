@@ -1,3 +1,11 @@
+### 0.1.4 (2015-10-01)
+
+
+#### Bug Fixes
+
+* **html-template-element:** correctly handle child templates ([a6961f33](http://github.com/aurelia/pal-browser/commit/a6961f33bf6fae7f8cdaeb235e5f5aca33aff5fe))
+
+
 ### 0.1.3 (2015-09-27)
 
 
