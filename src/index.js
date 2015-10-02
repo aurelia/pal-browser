@@ -8,7 +8,15 @@ import {ensureHTMLTemplateElement} from './html-template-element';
 import {ensureElementMatches} from './element-matches';
 import {ensureClassList} from './class-list';
 
+let isInitialized = false;
+
 export function initialize(): void {
+  if (isInitialized) {
+    return;
+  }
+
+  isInitialized = true;
+
   ensureCustomEvent();
   ensureFunctionName();
   ensureHTMLTemplateElement();
