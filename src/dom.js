@@ -5,6 +5,12 @@ let shadowPoly = window.ShadowDOMPolyfill || null;
 export const DOM = {
   Element: Element,
   boundary: 'aurelia-dom-boundary',
+  addEventListener(eventName: string, callback: Function, capture: boolean) {
+    document.addEventListener(eventName, callback, capture);
+  },
+  removeEventListener(eventName: string, callback: Function, capture: boolean) {
+    document.removeEventListener(eventName, callback, capture);
+  },
   adoptNode(node: Node) {
     return document.adoptNode(node, true);//TODO: what is does the true mean? typo?
   },
