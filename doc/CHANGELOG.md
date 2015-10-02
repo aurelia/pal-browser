@@ -1,3 +1,11 @@
+### 0.1.7 (2015-10-02)
+
+
+#### Bug Fixes
+
+* **all:** update to new initialization method and add DOM title prop ([abc46c93](http://github.com/aurelia/pal-browser/commit/abc46c93d7cf750ec2d05d142373c8dcede6db90))
+
+
 ### 0.1.6 (2015-10-02)
 
 

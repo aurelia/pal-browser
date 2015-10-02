@@ -1,6 +1,6 @@
 {
   "name": "aurelia-pal-browser",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "The browser-specific implementation of Aurelia's platform abstraction layer.",
   "keywords": [
     "aurelia",
@@ -14,5 +14,8 @@
   "repository": {
     "type": "git",
     "url": "http://github.com/aurelia/pal-browser"
+  },
+  "dependencies": {
+    "aurelia-pal": "^0.1.5"
   }
 }
