@@ -1,7 +1,7 @@
 System.register(['aurelia-pal'], function (_export) {
   'use strict';
 
-  var initializePAL, FEATURE, shadowPoly, DOM, PLATFORM;
+  var initializePAL, FEATURE, shadowPoly, DOM, PLATFORM, isInitialized;
 
   _export('ensureFunctionName', ensureFunctionName);
 
@@ -282,6 +282,12 @@ System.register(['aurelia-pal'], function (_export) {
   }
 
   function initialize() {
+    if (isInitialized) {
+      return;
+    }
+
+    isInitialized = true;
+
     ensureCustomEvent();
     ensureFunctionName();
     ensureHTMLTemplateElement();
@@ -495,6 +501,8 @@ System.register(['aurelia-pal'], function (_export) {
       };
 
       _export('PLATFORM', PLATFORM);
+
+      isInitialized = false;
     }
   };
 });

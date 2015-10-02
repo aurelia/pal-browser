@@ -1,6 +1,6 @@
 {
   "name": "aurelia-pal-browser",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "The browser-specific implementation of Aurelia's platform abstraction layer.",
   "keywords": [
     "aurelia",

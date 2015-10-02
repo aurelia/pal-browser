@@ -470,7 +470,15 @@ export const PLATFORM = {
   }
 };
 
+let isInitialized = false;
+
 export function initialize(): void {
+  if (isInitialized) {
+    return;
+  }
+
+  isInitialized = true;
+
   ensureCustomEvent();
   ensureFunctionName();
   ensureHTMLTemplateElement();

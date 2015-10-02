@@ -460,8 +460,15 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
   };
 
   exports.PLATFORM = PLATFORM;
+  var isInitialized = false;
 
   function initialize() {
+    if (isInitialized) {
+      return;
+    }
+
+    isInitialized = true;
+
     ensureCustomEvent();
     ensureFunctionName();
     ensureHTMLTemplateElement();

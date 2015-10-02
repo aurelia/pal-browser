@@ -461,8 +461,15 @@ var PLATFORM = {
 };
 
 exports.PLATFORM = PLATFORM;
+var isInitialized = false;
 
 function initialize() {
+  if (isInitialized) {
+    return;
+  }
+
+  isInitialized = true;
+
   ensureCustomEvent();
   ensureFunctionName();
   ensureHTMLTemplateElement();

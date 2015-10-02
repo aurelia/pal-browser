@@ -1,3 +1,11 @@
+### 0.1.9 (2015-10-02)
+
+
+#### Bug Fixes
+
+* **all:** ensure initialization happens only once ([b594bcea](http://github.com/aurelia/pal-browser/commit/b594bcea7d26930cb8bf3459344602b060ea4379))
+
+
 ### 0.1.8 (2015-10-02)
 
 
