@@ -1,6 +1,6 @@
 import {FEATURE} from './feature';
 
-export function ensureHTMLTemplateElement() {
+export function ensureHTMLTemplateElement(): void {
   function isSVGTemplate(el) {
     return el.tagName === 'template' &&
            el.namespaceURI === 'http://www.w3.org/2000/svg';

@@ -1,4 +1,4 @@
-export function ensureElementMatches() {
+export function ensureElementMatches(): void {
   if (Element && !Element.prototype.matches) {
     let proto = Element.prototype;
     proto.matches = proto.matchesSelector ||

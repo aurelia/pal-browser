@@ -8,7 +8,7 @@ import {ensureHTMLTemplateElement} from './html-template-element';
 import {ensureElementMatches} from './element-matches';
 import {ensureClassList} from './class-list';
 
-export function initialize() {
+export function initialize(): void {
   ensureCustomEvent();
   ensureFunctionName();
   ensureHTMLTemplateElement();

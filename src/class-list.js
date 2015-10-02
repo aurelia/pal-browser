@@ -1,4 +1,4 @@
-export function ensureClassList() {
+export function ensureClassList(): void {
   /*
    * classList polyfill. Forked from https://github.com/eligrey/classList.js
    *
