@@ -15,5 +15,18 @@ export function initialize(): void {
   ensureElementMatches();
   ensureClassList();
 
-  initializePAL(PLATFORM, FEATURE, DOM);
+  initializePAL((platform, feature, dom) => {
+    Object.assign(platform, PLATFORM);
+    Object.assign(feature, FEATURE);
+    Object.assign(dom, DOM);
+
+    Object.defineProperty(DOM, 'title', {
+      get: function() {
+        return document.title;
+      },
+      set: function(value) {
+        document.title = value;
+      }
+    });
+  });
 }

@@ -465,6 +465,19 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
     ensureElementMatches();
     ensureClassList();
 
-    _aureliaPal.initializePAL(PLATFORM, FEATURE, DOM);
+    _aureliaPal.initializePAL(function (platform, feature, dom) {
+      Object.assign(platform, PLATFORM);
+      Object.assign(feature, FEATURE);
+      Object.assign(dom, DOM);
+
+      Object.defineProperty(DOM, 'title', {
+        get: function get() {
+          return document.title;
+        },
+        set: function set(value) {
+          document.title = value;
+        }
+      });
+    });
   }
 });

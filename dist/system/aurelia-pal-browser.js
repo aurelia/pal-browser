@@ -288,7 +288,20 @@ System.register(['aurelia-pal'], function (_export) {
     ensureElementMatches();
     ensureClassList();
 
-    initializePAL(PLATFORM, FEATURE, DOM);
+    initializePAL(function (platform, feature, dom) {
+      Object.assign(platform, PLATFORM);
+      Object.assign(feature, FEATURE);
+      Object.assign(dom, DOM);
+
+      Object.defineProperty(DOM, 'title', {
+        get: function get() {
+          return document.title;
+        },
+        set: function set(value) {
+          document.title = value;
+        }
+      });
+    });
   }
 
   return {
