@@ -362,6 +362,12 @@ let shadowPoly = window.ShadowDOMPolyfill || null;
 export const DOM = {
   Element: Element,
   boundary: 'aurelia-dom-boundary',
+  addEventListener(eventName: string, callback: Function, capture: boolean): void {
+    document.addEventListener(eventName, callback, capture);
+  },
+  removeEventListener(eventName: string, callback: Function, capture: boolean): void {
+    document.removeEventListener(eventName, callback, capture);
+  },
   adoptNode(node: Node) {
     return document.adoptNode(node, true);//TODO: what is does the true mean? typo?
   },
@@ -452,7 +458,13 @@ export const DOM = {
 export const PLATFORM = {
   location: window.location,
   history: window.history,
-  XMLHttpRequest: XMLHttpRequest
+  XMLHttpRequest: XMLHttpRequest,
+  addEventListener(eventName: string, callback: Function, capture: boolean): void {
+    PLATFORM.global.addEventListener(eventName, callback, capture);
+  },
+  removeEventListener(eventName: string, callback: Function, capture: boolean): void {
+    PLATFORM.global.removeEventListener(eventName, callback, capture);
+  }
 };
 
 export function initialize(): void {

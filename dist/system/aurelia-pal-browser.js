@@ -373,6 +373,12 @@ System.register(['aurelia-pal'], function (_export) {
       DOM = {
         Element: Element,
         boundary: 'aurelia-dom-boundary',
+        addEventListener: function addEventListener(eventName, callback, capture) {
+          document.addEventListener(eventName, callback, capture);
+        },
+        removeEventListener: function removeEventListener(eventName, callback, capture) {
+          document.removeEventListener(eventName, callback, capture);
+        },
         adoptNode: function adoptNode(node) {
           return document.adoptNode(node, true);
         },
@@ -463,7 +469,13 @@ System.register(['aurelia-pal'], function (_export) {
       PLATFORM = {
         location: window.location,
         history: window.history,
-        XMLHttpRequest: XMLHttpRequest
+        XMLHttpRequest: XMLHttpRequest,
+        addEventListener: function addEventListener(eventName, callback, capture) {
+          PLATFORM.global.addEventListener(eventName, callback, capture);
+        },
+        removeEventListener: function removeEventListener(eventName, callback, capture) {
+          PLATFORM.global.removeEventListener(eventName, callback, capture);
+        }
       };
 
       _export('PLATFORM', PLATFORM);

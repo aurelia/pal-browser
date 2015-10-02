@@ -1,3 +1,11 @@
+### 0.1.6 (2015-10-02)
+
+
+#### Features
+
+* **all:** add dom and platform event apis ([613d516d](http://github.com/aurelia/pal-browser/commit/613d516d1fde0e193a2387134d1f1f4c131688f5))
+
+
 ### 0.1.5 (2015-10-01)
 
 
