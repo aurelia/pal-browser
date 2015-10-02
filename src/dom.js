@@ -5,10 +5,10 @@ let shadowPoly = window.ShadowDOMPolyfill || null;
 export const DOM = {
   Element: Element,
   boundary: 'aurelia-dom-boundary',
-  addEventListener(eventName: string, callback: Function, capture: boolean) {
+  addEventListener(eventName: string, callback: Function, capture: boolean): void {
     document.addEventListener(eventName, callback, capture);
   },
-  removeEventListener(eventName: string, callback: Function, capture: boolean) {
+  removeEventListener(eventName: string, callback: Function, capture: boolean): void {
     document.removeEventListener(eventName, callback, capture);
   },
   adoptNode(node: Node) {
