@@ -32,6 +32,9 @@ export const DOM = {
   createCustomEvent(eventType: string, options: Object): CustomEvent {
     return new window.CustomEvent(eventType, options);
   },
+  dispatchEvent(evt): void {
+    document.dispatchEvent(evt);
+  },
   getComputedStyle(element: Element) {
     return window.getComputedStyle(element);
   },

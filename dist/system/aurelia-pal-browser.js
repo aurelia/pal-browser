@@ -413,6 +413,9 @@ System.register(['aurelia-pal'], function (_export) {
         createCustomEvent: function createCustomEvent(eventType, options) {
           return new window.CustomEvent(eventType, options);
         },
+        dispatchEvent: function dispatchEvent(evt) {
+          document.dispatchEvent(evt);
+        },
         getComputedStyle: function getComputedStyle(element) {
           return window.getComputedStyle(element);
         },
