@@ -1,3 +1,13 @@
+### 0.1.5 (2015-10-01)
+
+
+#### Bug Fixes
+
+* **all:**
+  * correct type info ([bd43eb17](http://github.com/aurelia/pal-browser/commit/bd43eb175b328f372698a45e53fef25302800b63))
+  * make polfill patches explicit ([a9a8c84c](http://github.com/aurelia/pal-browser/commit/a9a8c84ce6b3f221f5f673b9441523fd855d7c4a))
+
+
 ### 0.1.4 (2015-10-01)
 
 

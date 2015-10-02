@@ -1,64 +1,293 @@
 System.register(['aurelia-pal'], function (_export) {
   'use strict';
 
-  var initializePAL, testElement, createMethod, _CustomEvent, proto, FEATURE, shadowPoly, DOM, PLATFORM;
+  var initializePAL, FEATURE, shadowPoly, DOM, PLATFORM;
+
+  _export('ensureFunctionName', ensureFunctionName);
+
+  _export('ensureClassList', ensureClassList);
+
+  _export('ensureCustomEvent', ensureCustomEvent);
+
+  _export('ensureElementMatches', ensureElementMatches);
+
+  _export('ensureHTMLTemplateElement', ensureHTMLTemplateElement);
 
   _export('initialize', initialize);
 
-  function test() {}
+  function ensureFunctionName() {
+    function test() {}
 
-  function isSVGTemplate(el) {
-    return el.tagName === 'template' && el.namespaceURI === 'http://www.w3.org/2000/svg';
-  }
+    if (!test.name) {
+      Object.defineProperty(Function.prototype, 'name', {
+        get: function get() {
+          var name = this.toString().match(/^\s*function\s*(\S*)\s*\(/)[1];
 
-  function fixSVGTemplateElement(el) {
-    var template = el.ownerDocument.createElement('template');
-    var attrs = el.attributes;
-    var length = attrs.length;
-    var attr = undefined;
-
-    el.parentNode.insertBefore(template, el);
-
-    while (length-- > 0) {
-      attr = attrs[length];
-      template.setAttribute(attr.name, attr.value);
-      el.removeAttribute(attr.name);
+          Object.defineProperty(this, 'name', { value: name });
+          return name;
+        }
+      });
     }
-
-    el.parentNode.removeChild(el);
-
-    return fixHTMLTemplateElement(template);
   }
 
-  function fixHTMLTemplateElement(template) {
-    var content = template.content = document.createDocumentFragment();
-    var child = undefined;
+  function ensureClassList() {
+    if (!('classList' in document.createElement('_')) || document.createElementNS && !('classList' in document.createElementNS('http://www.w3.org/2000/svg', 'g'))) {
+      (function () {
+        var protoProp = 'prototype';
+        var strTrim = String.prototype.trim;
+        var arrIndexOf = Array.prototype.indexOf;
+        var emptyArray = [];
 
-    while (child = template.firstChild) {
-      content.appendChild(child);
-    }
+        var DOMEx = function DOMEx(type, message) {
+          this.name = type;
+          this.code = DOMException[type];
+          this.message = message;
+        };
 
-    return template;
-  }
+        var checkTokenAndGetIndex = function checkTokenAndGetIndex(classList, token) {
+          if (token === '') {
+            throw new DOMEx('SYNTAX_ERR', 'An invalid or illegal string was specified');
+          }
 
-  function fixHTMLTemplateElementRoot(template) {
-    var content = fixHTMLTemplateElement(template).content;
-    var childTemplates = content.querySelectorAll('template');
+          if (/\s/.test(token)) {
+            throw new DOMEx('INVALID_CHARACTER_ERR', 'String contains an invalid character');
+          }
 
-    for (var i = 0, ii = childTemplates.length; i < ii; ++i) {
-      var child = childTemplates[i];
+          return arrIndexOf.call(classList, token);
+        };
 
-      if (isSVGTemplate(child)) {
-        fixSVGTemplateElement(child);
-      } else {
-        fixHTMLTemplateElement(child);
+        var ClassList = function ClassList(elem) {
+          var trimmedClasses = strTrim.call(elem.getAttribute('class') || '');
+          var classes = trimmedClasses ? trimmedClasses.split(/\s+/) : emptyArray;
+
+          for (var i = 0, ii = classes.length; i < ii; ++i) {
+            this.push(classes[i]);
+          }
+
+          this._updateClassName = function () {
+            elem.setAttribute('class', this.toString());
+          };
+        };
+
+        var classListProto = ClassList[protoProp] = [];
+
+        DOMEx[protoProp] = Error[protoProp];
+
+        classListProto.item = function (i) {
+          return this[i] || null;
+        };
+
+        classListProto.contains = function (token) {
+          token += '';
+          return checkTokenAndGetIndex(this, token) !== -1;
+        };
+
+        classListProto.add = function () {
+          var tokens = arguments;
+          var i = 0;
+          var ii = tokens.length;
+          var token = undefined;
+          var updated = false;
+
+          do {
+            token = tokens[i] + '';
+            if (checkTokenAndGetIndex(this, token) === -1) {
+              this.push(token);
+              updated = true;
+            }
+          } while (++i < ii);
+
+          if (updated) {
+            this._updateClassName();
+          }
+        };
+
+        classListProto.remove = function () {
+          var tokens = arguments;
+          var i = 0;
+          var ii = tokens.length;
+          var token = undefined;
+          var updated = false;
+          var index = undefined;
+
+          do {
+            token = tokens[i] + '';
+            index = checkTokenAndGetIndex(this, token);
+            while (index !== -1) {
+              this.splice(index, 1);
+              updated = true;
+              index = checkTokenAndGetIndex(this, token);
+            }
+          } while (++i < ii);
+
+          if (updated) {
+            this._updateClassName();
+          }
+        };
+
+        classListProto.toggle = function (token, force) {
+          token += '';
+
+          var result = this.contains(token);
+          var method = result ? force !== true && 'remove' : force !== false && 'add';
+
+          if (method) {
+            this[method](token);
+          }
+
+          if (force === true || force === false) {
+            return force;
+          }
+
+          return !result;
+        };
+
+        classListProto.toString = function () {
+          return this.join(' ');
+        };
+
+        Object.defineProperty(Element.prototype, 'classList', {
+          get: function get() {
+            return new ClassList(this);
+          },
+          enumerable: true,
+          configurable: true
+        });
+      })();
+    } else {
+      var testElement = document.createElement('_');
+      testElement.classList.add('c1', 'c2');
+
+      if (!testElement.classList.contains('c2')) {
+        var createMethod = function createMethod(method) {
+          var original = DOMTokenList.prototype[method];
+
+          DOMTokenList.prototype[method] = function (token) {
+            for (var i = 0, ii = arguments.length; i < ii; ++i) {
+              token = arguments[i];
+              original.call(this, token);
+            }
+          };
+        };
+
+        createMethod('add');
+        createMethod('remove');
       }
+
+      testElement.classList.toggle('c3', false);
+
+      if (testElement.classList.contains('c3')) {
+        (function () {
+          var _toggle = DOMTokenList.prototype.toggle;
+
+          DOMTokenList.prototype.toggle = function (token, force) {
+            if (1 in arguments && !this.contains(token) === !force) {
+              return force;
+            }
+
+            return _toggle.call(this, token);
+          };
+        })();
+      }
+
+      testElement = null;
+    }
+  }
+
+  function ensureCustomEvent() {
+    if (!window.CustomEvent || typeof window.CustomEvent !== 'function') {
+      var _CustomEvent = function _CustomEvent(event, params) {
+        params = params || {
+          bubbles: false,
+          cancelable: false,
+          detail: undefined
+        };
+
+        var evt = document.createEvent('CustomEvent');
+        evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+        return evt;
+      };
+
+      _CustomEvent.prototype = window.Event.prototype;
+      window.CustomEvent = _CustomEvent;
+    }
+  }
+
+  function ensureElementMatches() {
+    if (Element && !Element.prototype.matches) {
+      var proto = Element.prototype;
+      proto.matches = proto.matchesSelector || proto.mozMatchesSelector || proto.msMatchesSelector || proto.oMatchesSelector || proto.webkitMatchesSelector;
+    }
+  }
+
+  function ensureHTMLTemplateElement() {
+    function isSVGTemplate(el) {
+      return el.tagName === 'template' && el.namespaceURI === 'http://www.w3.org/2000/svg';
     }
 
-    return template;
+    function fixSVGTemplateElement(el) {
+      var template = el.ownerDocument.createElement('template');
+      var attrs = el.attributes;
+      var length = attrs.length;
+      var attr = undefined;
+
+      el.parentNode.insertBefore(template, el);
+
+      while (length-- > 0) {
+        attr = attrs[length];
+        template.setAttribute(attr.name, attr.value);
+        el.removeAttribute(attr.name);
+      }
+
+      el.parentNode.removeChild(el);
+
+      return fixHTMLTemplateElement(template);
+    }
+
+    function fixHTMLTemplateElement(template) {
+      var content = template.content = document.createDocumentFragment();
+      var child = undefined;
+
+      while (child = template.firstChild) {
+        content.appendChild(child);
+      }
+
+      return template;
+    }
+
+    function fixHTMLTemplateElementRoot(template) {
+      var content = fixHTMLTemplateElement(template).content;
+      var childTemplates = content.querySelectorAll('template');
+
+      for (var i = 0, ii = childTemplates.length; i < ii; ++i) {
+        var child = childTemplates[i];
+
+        if (isSVGTemplate(child)) {
+          fixSVGTemplateElement(child);
+        } else {
+          fixHTMLTemplateElement(child);
+        }
+      }
+
+      return template;
+    }
+
+    if (FEATURE.htmlTemplateElement) {
+      FEATURE.ensureHTMLTemplateElement = function (template) {
+        return template;
+      };
+    } else {
+      FEATURE.ensureHTMLTemplateElement = fixHTMLTemplateElementRoot;
+    }
   }
 
   function initialize() {
+    ensureCustomEvent();
+    ensureFunctionName();
+    ensureHTMLTemplateElement();
+    ensureElementMatches();
+    ensureClassList();
+
     initializePAL(PLATFORM, FEATURE, DOM);
   }
 
@@ -67,203 +296,6 @@ System.register(['aurelia-pal'], function (_export) {
       initializePAL = _aureliaPal.initializePAL;
     }],
     execute: function () {
-      if (!test.name) {
-        Object.defineProperty(Function.prototype, 'name', {
-          get: function get() {
-            var name = this.toString().match(/^\s*function\s*(\S*)\s*\(/)[1];
-
-            Object.defineProperty(this, 'name', { value: name });
-            return name;
-          }
-        });
-      }
-
-      if (!('classList' in document.createElement('_')) || document.createElementNS && !('classList' in document.createElementNS('http://www.w3.org/2000/svg', 'g'))) {
-        (function () {
-          var protoProp = 'prototype';
-          var strTrim = String.prototype.trim;
-          var arrIndexOf = Array.prototype.indexOf;
-          var emptyArray = [];
-
-          var DOMEx = function DOMEx(type, message) {
-            this.name = type;
-            this.code = DOMException[type];
-            this.message = message;
-          };
-
-          var checkTokenAndGetIndex = function checkTokenAndGetIndex(classList, token) {
-            if (token === '') {
-              throw new DOMEx('SYNTAX_ERR', 'An invalid or illegal string was specified');
-            }
-
-            if (/\s/.test(token)) {
-              throw new DOMEx('INVALID_CHARACTER_ERR', 'String contains an invalid character');
-            }
-
-            return arrIndexOf.call(classList, token);
-          };
-
-          var ClassList = function ClassList(elem) {
-            var trimmedClasses = strTrim.call(elem.getAttribute('class') || '');
-            var classes = trimmedClasses ? trimmedClasses.split(/\s+/) : emptyArray;
-
-            for (var i = 0, ii = classes.length; i < ii; ++i) {
-              this.push(classes[i]);
-            }
-
-            this._updateClassName = function () {
-              elem.setAttribute('class', this.toString());
-            };
-          };
-
-          var classListProto = ClassList[protoProp] = [];
-
-          DOMEx[protoProp] = Error[protoProp];
-
-          classListProto.item = function (i) {
-            return this[i] || null;
-          };
-
-          classListProto.contains = function (token) {
-            token += '';
-            return checkTokenAndGetIndex(this, token) !== -1;
-          };
-
-          classListProto.add = function () {
-            var tokens = arguments;
-            var i = 0;
-            var ii = tokens.length;
-            var token = undefined;
-            var updated = false;
-
-            do {
-              token = tokens[i] + '';
-              if (checkTokenAndGetIndex(this, token) === -1) {
-                this.push(token);
-                updated = true;
-              }
-            } while (++i < ii);
-
-            if (updated) {
-              this._updateClassName();
-            }
-          };
-
-          classListProto.remove = function () {
-            var tokens = arguments;
-            var i = 0;
-            var ii = tokens.length;
-            var token = undefined;
-            var updated = false;
-            var index = undefined;
-
-            do {
-              token = tokens[i] + '';
-              index = checkTokenAndGetIndex(this, token);
-              while (index !== -1) {
-                this.splice(index, 1);
-                updated = true;
-                index = checkTokenAndGetIndex(this, token);
-              }
-            } while (++i < ii);
-
-            if (updated) {
-              this._updateClassName();
-            }
-          };
-
-          classListProto.toggle = function (token, force) {
-            token += '';
-
-            var result = this.contains(token);
-            var method = result ? force !== true && 'remove' : force !== false && 'add';
-
-            if (method) {
-              this[method](token);
-            }
-
-            if (force === true || force === false) {
-              return force;
-            }
-
-            return !result;
-          };
-
-          classListProto.toString = function () {
-            return this.join(' ');
-          };
-
-          Object.defineProperty(Element.prototype, 'classList', {
-            get: function get() {
-              return new ClassList(this);
-            },
-            enumerable: true,
-            configurable: true
-          });
-        })();
-      } else {
-        testElement = document.createElement('_');
-
-        testElement.classList.add('c1', 'c2');
-
-        if (!testElement.classList.contains('c2')) {
-          createMethod = function createMethod(method) {
-            var original = DOMTokenList.prototype[method];
-
-            DOMTokenList.prototype[method] = function (token) {
-              for (var i = 0, ii = arguments.length; i < ii; ++i) {
-                token = arguments[i];
-                original.call(this, token);
-              }
-            };
-          };
-
-          createMethod('add');
-          createMethod('remove');
-        }
-
-        testElement.classList.toggle('c3', false);
-
-        if (testElement.classList.contains('c3')) {
-          (function () {
-            var _toggle = DOMTokenList.prototype.toggle;
-
-            DOMTokenList.prototype.toggle = function (token, force) {
-              if (1 in arguments && !this.contains(token) === !force) {
-                return force;
-              }
-
-              return _toggle.call(this, token);
-            };
-          })();
-        }
-
-        testElement = null;
-      }
-
-      if (!window.CustomEvent || typeof window.CustomEvent !== 'function') {
-        _CustomEvent = function _CustomEvent(event, params) {
-          params = params || {
-            bubbles: false,
-            cancelable: false,
-            detail: undefined
-          };
-
-          var evt = document.createEvent('CustomEvent');
-          evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
-          return evt;
-        };
-
-        _CustomEvent.prototype = window.Event.prototype;
-        window.CustomEvent = _CustomEvent;
-      }
-
-      if (Element && !Element.prototype.matches) {
-        proto = Element.prototype;
-
-        proto.matches = proto.matchesSelector || proto.mozMatchesSelector || proto.msMatchesSelector || proto.oMatchesSelector || proto.webkitMatchesSelector;
-      }
-
       FEATURE = {};
 
       _export('FEATURE', FEATURE);
@@ -335,13 +367,7 @@ System.register(['aurelia-pal'], function (_export) {
         Array.unobserve(arr, callback);
 
         return true;
-      })();if (FEATURE.htmlTemplateElement) {
-        FEATURE.ensureHTMLTemplateElement = function (template) {
-          return template;
-        };
-      } else {
-        FEATURE.ensureHTMLTemplateElement = fixHTMLTemplateElementRoot;
-      }
+      })();
 
       shadowPoly = window.ShadowDOMPolyfill || null;
       DOM = {
