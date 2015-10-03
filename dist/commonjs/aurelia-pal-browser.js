@@ -494,7 +494,7 @@ function initialize() {
 
     Object.defineProperty(platform, 'XMLHttpRequest', {
       get: function get() {
-        return PLATFORM.global.XMLHttpRequest;
+        return platform.global.XMLHttpRequest;
       }
     });
   });

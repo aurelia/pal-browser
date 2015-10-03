@@ -310,7 +310,7 @@ System.register(['aurelia-pal'], function (_export) {
 
       Object.defineProperty(platform, 'XMLHttpRequest', {
         get: function get() {
-          return PLATFORM.global.XMLHttpRequest;
+          return platform.global.XMLHttpRequest;
         }
       });
     });

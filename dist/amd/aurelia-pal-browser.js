@@ -493,7 +493,7 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
 
       Object.defineProperty(platform, 'XMLHttpRequest', {
         get: function get() {
-          return PLATFORM.global.XMLHttpRequest;
+          return platform.global.XMLHttpRequest;
         }
       });
     });

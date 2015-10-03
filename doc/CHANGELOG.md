@@ -1,3 +1,11 @@
+### 0.1.11 (2015-10-02)
+
+
+#### Bug Fixes
+
+* **initialize:** use correct platform object for global access ([e7493568](http://github.com/aurelia/pal-browser/commit/e7493568e39c253e177d5dac9a36c62eda6a251c))
+
+
 ### 0.1.10 (2015-10-02)
 
 

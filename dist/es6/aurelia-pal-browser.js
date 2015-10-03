@@ -503,7 +503,7 @@ export function initialize(): void {
 
     Object.defineProperty(platform, 'XMLHttpRequest', {
       get: function() {
-        return PLATFORM.global.XMLHttpRequest;
+        return platform.global.XMLHttpRequest;
       }
     });
   });
