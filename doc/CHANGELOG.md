@@ -1,3 +1,11 @@
+### 0.1.10 (2015-10-02)
+
+
+#### Features
+
+* **all:** correct missing properties on pal objects ([5da8ba3b](http://github.com/aurelia/pal-browser/commit/5da8ba3bded4aa9021bc5b5feaea3070933a7acb))
+
+
 ### 0.1.9 (2015-10-02)
 
 

@@ -412,6 +412,9 @@ var DOM = {
 
     return FEATURE.ensureHTMLTemplateElement(temp);
   },
+  appendNode: function appendNode(newNode, parentNode) {
+    (parentNode || document.body).appendChild(newNode);
+  },
   replaceNode: function replaceNode(newNode, node, parentNode) {
     if (node.parentNode) {
       node.parentNode.replaceChild(newNode, node);
@@ -451,7 +454,6 @@ exports.DOM = DOM;
 var PLATFORM = {
   location: window.location,
   history: window.history,
-  XMLHttpRequest: XMLHttpRequest,
   addEventListener: function addEventListener(eventName, callback, capture) {
     PLATFORM.global.addEventListener(eventName, callback, capture);
   },
@@ -481,12 +483,18 @@ function initialize() {
     Object.assign(feature, FEATURE);
     Object.assign(dom, DOM);
 
-    Object.defineProperty(DOM, 'title', {
+    Object.defineProperty(dom, 'title', {
       get: function get() {
         return document.title;
       },
       set: function set(value) {
         document.title = value;
+      }
+    });
+
+    Object.defineProperty(platform, 'XMLHttpRequest', {
+      get: function get() {
+        return PLATFORM.global.XMLHttpRequest;
       }
     });
   });
