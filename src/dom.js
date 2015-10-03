@@ -61,6 +61,9 @@ export const DOM = {
 
     return FEATURE.ensureHTMLTemplateElement(temp);
   },
+  appendNode(newNode: Node, parentNode?:Node): void {
+    (parentNode || document.body).appendChild(newNode);
+  },
   replaceNode(newNode: Node, node: Node, parentNode: Node): void {
     if (node.parentNode) {
       node.parentNode.replaceChild(newNode, node);

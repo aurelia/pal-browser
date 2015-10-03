@@ -28,12 +28,18 @@ export function initialize(): void {
     Object.assign(feature, FEATURE);
     Object.assign(dom, DOM);
 
-    Object.defineProperty(DOM, 'title', {
+    Object.defineProperty(dom, 'title', {
       get: function() {
         return document.title;
       },
       set: function(value) {
         document.title = value;
+      }
+    });
+
+    Object.defineProperty(platform, 'XMLHttpRequest', {
+      get: function() {
+        return PLATFORM.global.XMLHttpRequest;
       }
     });
   });
