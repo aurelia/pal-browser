@@ -397,6 +397,7 @@ System.register(['aurelia-pal'], function (_export) {
       shadowPoly = window.ShadowDOMPolyfill || null;
       DOM = {
         Element: Element,
+        SVGElement: SVGElement,
         boundary: 'aurelia-dom-boundary',
         addEventListener: function addEventListener(eventName, callback, capture) {
           document.addEventListener(eventName, callback, capture);

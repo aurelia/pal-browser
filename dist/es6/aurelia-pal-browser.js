@@ -361,6 +361,7 @@ let shadowPoly = window.ShadowDOMPolyfill || null;
 
 export const DOM = {
   Element: Element,
+  SVGElement: SVGElement,
   boundary: 'aurelia-dom-boundary',
   addEventListener(eventName: string, callback: Function, capture: boolean): void {
     document.addEventListener(eventName, callback, capture);
