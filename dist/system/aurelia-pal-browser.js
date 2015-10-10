@@ -308,6 +308,12 @@ System.register(['aurelia-pal'], function (_export) {
         }
       });
 
+      Object.defineProperty(dom, 'activeElement', {
+        get: function get() {
+          return document.activeElement;
+        }
+      });
+
       Object.defineProperty(platform, 'XMLHttpRequest', {
         get: function get() {
           return platform.global.XMLHttpRequest;
@@ -327,6 +333,10 @@ System.register(['aurelia-pal'], function (_export) {
 
       FEATURE.shadowDOM = (function () {
         return !!HTMLElement.prototype.createShadowRoot;
+      })();
+
+      FEATURE.scopedCSS = (function () {
+        return 'scoped' in document.createElement('style');
       })();
 
       FEATURE.htmlTemplateElement = (function () {

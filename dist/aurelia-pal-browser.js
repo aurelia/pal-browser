@@ -229,6 +229,10 @@ FEATURE.shadowDOM = (function() {
   return !!HTMLElement.prototype.createShadowRoot;
 })();
 
+FEATURE.scopedCSS = (function() {
+  return 'scoped' in document.createElement('style');
+})();
+
 FEATURE.htmlTemplateElement = (function() {
   return 'content' in document.createElement('template');
 })();
@@ -499,6 +503,12 @@ export function initialize(): void {
       },
       set: function(value) {
         document.title = value;
+      }
+    });
+
+    Object.defineProperty(dom, 'activeElement', {
+      get: function() {
+        return document.activeElement;
       }
     });
 

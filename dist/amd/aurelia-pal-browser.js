@@ -221,6 +221,10 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
     return !!HTMLElement.prototype.createShadowRoot;
   })();
 
+  FEATURE.scopedCSS = (function () {
+    return 'scoped' in document.createElement('style');
+  })();
+
   FEATURE.htmlTemplateElement = (function () {
     return 'content' in document.createElement('template');
   })();
@@ -489,6 +493,12 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
         },
         set: function set(value) {
           document.title = value;
+        }
+      });
+
+      Object.defineProperty(dom, 'activeElement', {
+        get: function get() {
+          return document.activeElement;
         }
       });
 

@@ -1,3 +1,11 @@
+### 0.1.13 (2015-10-09)
+
+
+#### Features
+
+* **all:** add activeElement and scopedCSS ([02bd5924](http://github.com/aurelia/pal-browser/commit/02bd59241823f87286c481e842508ca67ba0854d))
+
+
 ### 0.1.12 (2015-10-04)
 
 
