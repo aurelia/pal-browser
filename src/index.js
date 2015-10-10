@@ -37,6 +37,12 @@ export function initialize(): void {
       }
     });
 
+    Object.defineProperty(dom, 'activeElement', {
+      get: function() {
+        return document.activeElement;
+      }
+    });
+
     Object.defineProperty(platform, 'XMLHttpRequest', {
       get: function() {
         return platform.global.XMLHttpRequest;

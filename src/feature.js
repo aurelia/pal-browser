@@ -4,6 +4,10 @@ FEATURE.shadowDOM = (function() {
   return !!HTMLElement.prototype.createShadowRoot;
 })();
 
+FEATURE.scopedCSS = (function() {
+  return 'scoped' in document.createElement('style');
+})();
+
 FEATURE.htmlTemplateElement = (function() {
   return 'content' in document.createElement('template');
 })();
