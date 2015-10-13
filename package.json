@@ -12,7 +12,7 @@
   },
   "license": "MIT",
   "author": "Rob Eisenberg <rob@bluespire.com> (http://robeisenberg.com/)",
-  "main": "dist/commonjs/pal-browser.js",
+  "main": "dist/commonjs/aurelia-pal-browser.js",
   "repository": {
     "type": "git",
     "url": "http://github.com/aurelia/pal-browser"
