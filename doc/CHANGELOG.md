@@ -1,3 +1,30 @@
+## 0.2.0 (2015-10-13)
+
+
+#### Bug Fixes
+
+* **all:**
+  * ensure initialization happens only once ([b594bcea](http://github.com/aurelia/pal-browser/commit/b594bcea7d26930cb8bf3459344602b060ea4379))
+  * update to new initialization method and add DOM title prop ([abc46c93](http://github.com/aurelia/pal-browser/commit/abc46c93d7cf750ec2d05d142373c8dcede6db90))
+  * correct type info ([bd43eb17](http://github.com/aurelia/pal-browser/commit/bd43eb175b328f372698a45e53fef25302800b63))
+  * make polfill patches explicit ([a9a8c84c](http://github.com/aurelia/pal-browser/commit/a9a8c84ce6b3f221f5f673b9441523fd855d7c4a))
+* **html-template-element:** correctly handle child templates ([a6961f33](http://github.com/aurelia/pal-browser/commit/a6961f33bf6fae7f8cdaeb235e5f5aca33aff5fe))
+* **initialize:** use correct platform object for global access ([e7493568](http://github.com/aurelia/pal-browser/commit/e7493568e39c253e177d5dac9a36c62eda6a251c))
+* **package:** correct main path ([142415ac](http://github.com/aurelia/pal-browser/commit/142415ac43097efcfb9abc9c9c325ce1e35b275e))
+* **platform:**
+  * incorrect platform reference ([cef7ba8b](http://github.com/aurelia/pal-browser/commit/cef7ba8b5c4b8be9d6bb917913672c9aa108e652))
+  * remove bad module iteration method ([3529b983](http://github.com/aurelia/pal-browser/commit/3529b9832c139ef77f2c755d0b0ad37e599ba8f1))
+
+
+#### Features
+
+* **all:**
+  * add activeElement and scopedCSS ([02bd5924](http://github.com/aurelia/pal-browser/commit/02bd59241823f87286c481e842508ca67ba0854d))
+  * correct missing properties on pal objects ([5da8ba3b](http://github.com/aurelia/pal-browser/commit/5da8ba3bded4aa9021bc5b5feaea3070933a7acb))
+  * add dom and platform event apis ([613d516d](http://github.com/aurelia/pal-browser/commit/613d516d1fde0e193a2387134d1f1f4c131688f5))
+  * initial implementation ([b9aacd06](http://github.com/aurelia/pal-browser/commit/b9aacd0620ca51f8648115220793f4df5ce030ac))
+
+
 ### 0.1.13 (2015-10-09)
 
 

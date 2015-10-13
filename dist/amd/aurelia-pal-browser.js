@@ -459,10 +459,10 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
     location: window.location,
     history: window.history,
     addEventListener: function addEventListener(eventName, callback, capture) {
-      PLATFORM.global.addEventListener(eventName, callback, capture);
+      this.global.addEventListener(eventName, callback, capture);
     },
     removeEventListener: function removeEventListener(eventName, callback, capture) {
-      PLATFORM.global.removeEventListener(eventName, callback, capture);
+      this.global.removeEventListener(eventName, callback, capture);
     }
   };
 
