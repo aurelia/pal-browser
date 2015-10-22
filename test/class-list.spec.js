@@ -1,6 +1,8 @@
+﻿import {_DOM} from '../src/dom';
+
 describe('classList', () => {
   it('Element', () => {
-    var element = document.createElement('p');
+    var element = _DOM.createElement('p');
     element.classList.add('foo');
     expect(element.className).toBe('foo');
     element.classList.add('bar');

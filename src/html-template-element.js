@@ -1,6 +1,6 @@
-import {FEATURE} from './feature';
+import {_FEATURE} from './feature';
 
-export function ensureHTMLTemplateElement(): void {
+export function _ensureHTMLTemplateElement(): void {
   function isSVGTemplate(el) {
     return el.tagName === 'template' &&
            el.namespaceURI === 'http://www.w3.org/2000/svg';
@@ -53,9 +53,9 @@ export function ensureHTMLTemplateElement(): void {
     return template;
   }
 
-  if (FEATURE.htmlTemplateElement) {
-    FEATURE.ensureHTMLTemplateElement = function(template) { return template; };
+  if (_FEATURE.htmlTemplateElement) {
+    _FEATURE.ensureHTMLTemplateElement = function(template) { return template; };
   } else {
-    FEATURE.ensureHTMLTemplateElement = fixHTMLTemplateElementRoot;
+    _FEATURE.ensureHTMLTemplateElement = fixHTMLTemplateElementRoot;
   }
 }

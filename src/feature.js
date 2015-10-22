@@ -1,18 +1,18 @@
-export const FEATURE = {};
+export const _FEATURE = {};
 
-FEATURE.shadowDOM = (function() {
+_FEATURE.shadowDOM = (function() {
   return !!HTMLElement.prototype.createShadowRoot;
 })();
 
-FEATURE.scopedCSS = (function() {
+_FEATURE.scopedCSS = (function() {
   return 'scoped' in document.createElement('style');
 })();
 
-FEATURE.htmlTemplateElement = (function() {
+_FEATURE.htmlTemplateElement = (function() {
   return 'content' in document.createElement('template');
 })();
 
-FEATURE.objectObserve = (function detectObjectObserve() {
+_FEATURE.objectObserve = (function detectObjectObserve() {
   if (typeof Object.observe !== 'function') {
     return false;
   }
@@ -45,7 +45,7 @@ FEATURE.objectObserve = (function detectObjectObserve() {
   return true;
 })();
 
-FEATURE.arrayObserve = (function detectArrayObserve() {
+_FEATURE.arrayObserve = (function detectArrayObserve() {
   if (typeof Array.observe !== 'function') {
     return false;
   }

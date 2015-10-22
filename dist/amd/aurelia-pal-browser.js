@@ -2,14 +2,14 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
   'use strict';
 
   exports.__esModule = true;
-  exports.ensureFunctionName = ensureFunctionName;
-  exports.ensureClassList = ensureClassList;
-  exports.ensureCustomEvent = ensureCustomEvent;
-  exports.ensureElementMatches = ensureElementMatches;
-  exports.ensureHTMLTemplateElement = ensureHTMLTemplateElement;
+  exports._ensureFunctionName = _ensureFunctionName;
+  exports._ensureClassList = _ensureClassList;
+  exports._ensureCustomEvent = _ensureCustomEvent;
+  exports._ensureElementMatches = _ensureElementMatches;
+  exports._ensureHTMLTemplateElement = _ensureHTMLTemplateElement;
   exports.initialize = initialize;
 
-  function ensureFunctionName() {
+  function _ensureFunctionName() {
     function test() {}
 
     if (!test.name) {
@@ -24,7 +24,7 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
     }
   }
 
-  function ensureClassList() {
+  function _ensureClassList() {
     if (!('classList' in document.createElement('_')) || document.createElementNS && !('classList' in document.createElementNS('http://www.w3.org/2000/svg', 'g'))) {
       (function () {
         var protoProp = 'prototype';
@@ -188,7 +188,7 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
     }
   }
 
-  function ensureCustomEvent() {
+  function _ensureCustomEvent() {
     if (!window.CustomEvent || typeof window.CustomEvent !== 'function') {
       var _CustomEvent = function _CustomEvent(event, params) {
         params = params || {
@@ -207,29 +207,29 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
     }
   }
 
-  function ensureElementMatches() {
+  function _ensureElementMatches() {
     if (Element && !Element.prototype.matches) {
       var proto = Element.prototype;
       proto.matches = proto.matchesSelector || proto.mozMatchesSelector || proto.msMatchesSelector || proto.oMatchesSelector || proto.webkitMatchesSelector;
     }
   }
 
-  var FEATURE = {};
+  var _FEATURE = {};
 
-  exports.FEATURE = FEATURE;
-  FEATURE.shadowDOM = (function () {
+  exports._FEATURE = _FEATURE;
+  _FEATURE.shadowDOM = (function () {
     return !!HTMLElement.prototype.createShadowRoot;
   })();
 
-  FEATURE.scopedCSS = (function () {
+  _FEATURE.scopedCSS = (function () {
     return 'scoped' in document.createElement('style');
   })();
 
-  FEATURE.htmlTemplateElement = (function () {
+  _FEATURE.htmlTemplateElement = (function () {
     return 'content' in document.createElement('template');
   })();
 
-  FEATURE.objectObserve = (function detectObjectObserve() {
+  _FEATURE.objectObserve = (function detectObjectObserve() {
     if (typeof Object.observe !== 'function') {
       return false;
     }
@@ -260,7 +260,7 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
     return true;
   })();
 
-  FEATURE.arrayObserve = (function detectArrayObserve() {
+  _FEATURE.arrayObserve = (function detectArrayObserve() {
     if (typeof Array.observe !== 'function') {
       return false;
     }
@@ -290,7 +290,7 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
     return true;
   })();
 
-  function ensureHTMLTemplateElement() {
+  function _ensureHTMLTemplateElement() {
     function isSVGTemplate(el) {
       return el.tagName === 'template' && el.namespaceURI === 'http://www.w3.org/2000/svg';
     }
@@ -342,18 +342,18 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
       return template;
     }
 
-    if (FEATURE.htmlTemplateElement) {
-      FEATURE.ensureHTMLTemplateElement = function (template) {
+    if (_FEATURE.htmlTemplateElement) {
+      _FEATURE.ensureHTMLTemplateElement = function (template) {
         return template;
       };
     } else {
-      FEATURE.ensureHTMLTemplateElement = fixHTMLTemplateElementRoot;
+      _FEATURE.ensureHTMLTemplateElement = fixHTMLTemplateElementRoot;
     }
   }
 
   var shadowPoly = window.ShadowDOMPolyfill || null;
 
-  var DOM = {
+  var _DOM = {
     Element: Element,
     SVGElement: SVGElement,
     boundary: 'aurelia-dom-boundary',
@@ -414,7 +414,7 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
         throw new Error('Template markup must be wrapped in a <template> element e.g. <template> <!-- markup here --> </template>');
       }
 
-      return FEATURE.ensureHTMLTemplateElement(temp);
+      return _FEATURE.ensureHTMLTemplateElement(temp);
     },
     appendNode: function appendNode(newNode, parentNode) {
       (parentNode || document.body).appendChild(newNode);
@@ -454,8 +454,8 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
     }
   };
 
-  exports.DOM = DOM;
-  var PLATFORM = {
+  exports._DOM = _DOM;
+  var _PLATFORM = {
     location: window.location,
     history: window.history,
     addEventListener: function addEventListener(eventName, callback, capture) {
@@ -466,7 +466,7 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
     }
   };
 
-  exports.PLATFORM = PLATFORM;
+  exports._PLATFORM = _PLATFORM;
   var isInitialized = false;
 
   function initialize() {
@@ -476,16 +476,16 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
 
     isInitialized = true;
 
-    ensureCustomEvent();
-    ensureFunctionName();
-    ensureHTMLTemplateElement();
-    ensureElementMatches();
-    ensureClassList();
+    _ensureCustomEvent();
+    _ensureFunctionName();
+    _ensureHTMLTemplateElement();
+    _ensureElementMatches();
+    _ensureClassList();
 
     _aureliaPal.initializePAL(function (platform, feature, dom) {
-      Object.assign(platform, PLATFORM);
-      Object.assign(feature, FEATURE);
-      Object.assign(dom, DOM);
+      Object.assign(platform, _PLATFORM);
+      Object.assign(feature, _FEATURE);
+      Object.assign(dom, _DOM);
 
       Object.defineProperty(dom, 'title', {
         get: function get() {

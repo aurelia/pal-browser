@@ -1,4 +1,4 @@
-export function ensureCustomEvent(): void {
+export function _ensureCustomEvent(): void {
   if (!window.CustomEvent || typeof window.CustomEvent !== 'function') {
     let CustomEvent = function(event, params) {
       params = params || {

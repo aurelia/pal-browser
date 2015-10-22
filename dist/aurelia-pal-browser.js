@@ -1,6 +1,6 @@
 import {initializePAL} from 'aurelia-pal';
 
-export function ensureFunctionName(): void {
+export function _ensureFunctionName(): void {
   // Fix Function#name on browsers that do not support it (IE):
   function test() {}
 
@@ -17,7 +17,7 @@ export function ensureFunctionName(): void {
   }
 }
 
-export function ensureClassList(): void {
+export function _ensureClassList(): void {
   /*
    * classList polyfill. Forked from https://github.com/eligrey/classList.js
    *
@@ -195,7 +195,7 @@ export function ensureClassList(): void {
   }
 }
 
-export function ensureCustomEvent(): void {
+export function _ensureCustomEvent(): void {
   if (!window.CustomEvent || typeof window.CustomEvent !== 'function') {
     let CustomEvent = function(event, params) {
       params = params || {
@@ -214,7 +214,7 @@ export function ensureCustomEvent(): void {
   }
 }
 
-export function ensureElementMatches(): void {
+export function _ensureElementMatches(): void {
   if (Element && !Element.prototype.matches) {
     let proto = Element.prototype;
     proto.matches = proto.matchesSelector ||
@@ -223,21 +223,21 @@ export function ensureElementMatches(): void {
   }
 }
 
-export const FEATURE = {};
+export const _FEATURE = {};
 
-FEATURE.shadowDOM = (function() {
+_FEATURE.shadowDOM = (function() {
   return !!HTMLElement.prototype.createShadowRoot;
 })();
 
-FEATURE.scopedCSS = (function() {
+_FEATURE.scopedCSS = (function() {
   return 'scoped' in document.createElement('style');
 })();
 
-FEATURE.htmlTemplateElement = (function() {
+_FEATURE.htmlTemplateElement = (function() {
   return 'content' in document.createElement('template');
 })();
 
-FEATURE.objectObserve = (function detectObjectObserve() {
+_FEATURE.objectObserve = (function detectObjectObserve() {
   if (typeof Object.observe !== 'function') {
     return false;
   }
@@ -270,7 +270,7 @@ FEATURE.objectObserve = (function detectObjectObserve() {
   return true;
 })();
 
-FEATURE.arrayObserve = (function detectArrayObserve() {
+_FEATURE.arrayObserve = (function detectArrayObserve() {
   if (typeof Array.observe !== 'function') {
     return false;
   }
@@ -301,7 +301,7 @@ FEATURE.arrayObserve = (function detectArrayObserve() {
   return true;
 })();
 
-export function ensureHTMLTemplateElement(): void {
+export function _ensureHTMLTemplateElement(): void {
   function isSVGTemplate(el) {
     return el.tagName === 'template' &&
            el.namespaceURI === 'http://www.w3.org/2000/svg';
@@ -354,16 +354,19 @@ export function ensureHTMLTemplateElement(): void {
     return template;
   }
 
-  if (FEATURE.htmlTemplateElement) {
-    FEATURE.ensureHTMLTemplateElement = function(template) { return template; };
+  if (_FEATURE.htmlTemplateElement) {
+    _FEATURE.ensureHTMLTemplateElement = function(template) { return template; };
   } else {
-    FEATURE.ensureHTMLTemplateElement = fixHTMLTemplateElementRoot;
+    _FEATURE.ensureHTMLTemplateElement = fixHTMLTemplateElementRoot;
   }
 }
 
 let shadowPoly = window.ShadowDOMPolyfill || null;
 
-export const DOM = {
+/**
+* Represents the core APIs of the DOM.
+*/
+export const _DOM = {
   Element: Element,
   SVGElement: SVGElement,
   boundary: 'aurelia-dom-boundary',
@@ -421,7 +424,7 @@ export const DOM = {
       throw new Error(`Template markup must be wrapped in a <template> element e.g. <template> <!-- markup here --> </template>`);
     }
 
-    return FEATURE.ensureHTMLTemplateElement(temp);
+    return _FEATURE.ensureHTMLTemplateElement(temp);
   },
   appendNode(newNode: Node, parentNode?:Node): void {
     (parentNode || document.body).appendChild(newNode);
@@ -466,7 +469,7 @@ export const DOM = {
   }
 };
 
-export const PLATFORM = {
+export const _PLATFORM = {
   location: window.location,
   history: window.history,
   addEventListener(eventName: string, callback: Function, capture: boolean): void {
@@ -479,6 +482,9 @@ export const PLATFORM = {
 
 let isInitialized = false;
 
+/**
+* Initializes the PAL with the Browser-targeted implementation.
+*/
 export function initialize(): void {
   if (isInitialized) {
     return;
@@ -486,16 +492,16 @@ export function initialize(): void {
 
   isInitialized = true;
 
-  ensureCustomEvent();
-  ensureFunctionName();
-  ensureHTMLTemplateElement();
-  ensureElementMatches();
-  ensureClassList();
+  _ensureCustomEvent();
+  _ensureFunctionName();
+  _ensureHTMLTemplateElement();
+  _ensureElementMatches();
+  _ensureClassList();
 
   initializePAL((platform, feature, dom) => {
-    Object.assign(platform, PLATFORM);
-    Object.assign(feature, FEATURE);
-    Object.assign(dom, DOM);
+    Object.assign(platform, _PLATFORM);
+    Object.assign(feature, _FEATURE);
+    Object.assign(dom, _DOM);
 
     Object.defineProperty(dom, 'title', {
       get: function() {

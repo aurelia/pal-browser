@@ -1,15 +1,18 @@
 import {initializePAL} from 'aurelia-pal';
-import {PLATFORM} from './platform';
-import {FEATURE} from './feature';
-import {DOM} from './dom';
-import {ensureCustomEvent} from './custom-event';
-import {ensureFunctionName} from './function-name';
-import {ensureHTMLTemplateElement} from './html-template-element';
-import {ensureElementMatches} from './element-matches';
-import {ensureClassList} from './class-list';
+import {_PLATFORM} from './platform';
+import {_FEATURE} from './feature';
+import {_DOM} from './dom';
+import {_ensureCustomEvent} from './custom-event';
+import {_ensureFunctionName} from './function-name';
+import {_ensureHTMLTemplateElement} from './html-template-element';
+import {_ensureElementMatches} from './element-matches';
+import {_ensureClassList} from './class-list';
 
 let isInitialized = false;
 
+/**
+* Initializes the PAL with the Browser-targeted implementation.
+*/
 export function initialize(): void {
   if (isInitialized) {
     return;
@@ -17,16 +20,16 @@ export function initialize(): void {
 
   isInitialized = true;
 
-  ensureCustomEvent();
-  ensureFunctionName();
-  ensureHTMLTemplateElement();
-  ensureElementMatches();
-  ensureClassList();
+  _ensureCustomEvent();
+  _ensureFunctionName();
+  _ensureHTMLTemplateElement();
+  _ensureElementMatches();
+  _ensureClassList();
 
   initializePAL((platform, feature, dom) => {
-    Object.assign(platform, PLATFORM);
-    Object.assign(feature, FEATURE);
-    Object.assign(dom, DOM);
+    Object.assign(platform, _PLATFORM);
+    Object.assign(feature, _FEATURE);
+    Object.assign(dom, _DOM);
 
     Object.defineProperty(dom, 'title', {
       get: function() {

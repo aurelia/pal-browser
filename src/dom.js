@@ -1,8 +1,11 @@
-import {FEATURE} from './feature';
+import {_FEATURE} from './feature';
 
 let shadowPoly = window.ShadowDOMPolyfill || null;
 
-export const DOM = {
+/**
+* Represents the core APIs of the DOM.
+*/
+export const _DOM = {
   Element: Element,
   SVGElement: SVGElement,
   boundary: 'aurelia-dom-boundary',
@@ -60,7 +63,7 @@ export const DOM = {
       throw new Error(`Template markup must be wrapped in a <template> element e.g. <template> <!-- markup here --> </template>`);
     }
 
-    return FEATURE.ensureHTMLTemplateElement(temp);
+    return _FEATURE.ensureHTMLTemplateElement(temp);
   },
   appendNode(newNode: Node, parentNode?:Node): void {
     (parentNode || document.body).appendChild(newNode);

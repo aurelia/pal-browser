@@ -1,4 +1,4 @@
-export function ensureFunctionName(): void {
+export function _ensureFunctionName(): void {
   // Fix Function#name on browsers that do not support it (IE):
   function test() {}
 

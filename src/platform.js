@@ -1,4 +1,4 @@
-export const PLATFORM = {
+export const _PLATFORM = {
   location: window.location,
   history: window.history,
   addEventListener(eventName: string, callback: Function, capture: boolean): void {
