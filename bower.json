@@ -16,6 +16,6 @@
     "url": "http://github.com/aurelia/pal-browser"
   },
   "dependencies": {
-    "aurelia-pal": "^0.2.0"
+    "aurelia-pal": "^0.3.0"
   }
 }
