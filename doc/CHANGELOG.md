@@ -1,3 +1,6 @@
+### 1.0.0-beta.1 (2015-11-15)
+
+
 ## 0.3.0 (2015-11-09)
 
 
@@ -117,4 +120,3 @@
 #### Features
 
 * **all:** initial implementation ([b9aacd06](http://github.com/aurelia/pal-browser/commit/b9aacd0620ca51f8648115220793f4df5ce030ac))
-
