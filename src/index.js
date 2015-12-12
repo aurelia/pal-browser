@@ -7,6 +7,7 @@ import {_ensureFunctionName} from './function-name';
 import {_ensureHTMLTemplateElement} from './html-template-element';
 import {_ensureElementMatches} from './element-matches';
 import {_ensureClassList} from './class-list';
+import {_ensurePerformance} from './performance';
 
 let isInitialized = false;
 
@@ -25,6 +26,7 @@ export function initialize(): void {
   _ensureHTMLTemplateElement();
   _ensureElementMatches();
   _ensureClassList();
+  _ensurePerformance();
 
   initializePAL((platform, feature, dom) => {
     Object.assign(platform, _PLATFORM);

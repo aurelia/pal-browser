@@ -17,6 +17,7 @@ gulp.task('build-index', function(){
   var files = [
     'function-name.js',
     'class-list.js',
+    'performance.js',
     'custom-event.js',
     'element-matches.js',
     'feature.js',
