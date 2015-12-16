@@ -7,6 +7,8 @@ System.register(['aurelia-pal'], function (_export) {
 
   _export('_ensureClassList', _ensureClassList);
 
+  _export('_ensurePerformance', _ensurePerformance);
+
   _export('_ensureCustomEvent', _ensureCustomEvent);
 
   _export('_ensureElementMatches', _ensureElementMatches);
@@ -194,6 +196,32 @@ System.register(['aurelia-pal'], function (_export) {
     }
   }
 
+  function _ensurePerformance() {
+    // @license http://opensource.org/licenses/MIT
+
+    if ('performance' in window === false) {
+      window.performance = {};
+    }
+
+    Date.now = Date.now || function () {
+      return new Date().getTime();
+    };
+
+    if ('now' in window.performance === false) {
+      (function () {
+        var nowOffset = Date.now();
+
+        if (performance.timing && performance.timing.navigationStart) {
+          nowOffset = performance.timing.navigationStart;
+        }
+
+        window.performance.now = function now() {
+          return Date.now() - nowOffset;
+        };
+      })();
+    }
+  }
+
   function _ensureCustomEvent() {
     if (!window.CustomEvent || typeof window.CustomEvent !== 'function') {
       var _CustomEvent = function _CustomEvent(event, params) {
@@ -293,6 +321,7 @@ System.register(['aurelia-pal'], function (_export) {
     _ensureHTMLTemplateElement();
     _ensureElementMatches();
     _ensureClassList();
+    _ensurePerformance();
 
     initializePAL(function (platform, feature, dom) {
       Object.assign(platform, _PLATFORM);
@@ -516,6 +545,10 @@ System.register(['aurelia-pal'], function (_export) {
         },
         removeEventListener: function removeEventListener(eventName, callback, capture) {
           this.global.removeEventListener(eventName, callback, capture);
+        },
+        performance: window.performance,
+        requestAnimationFrame: function requestAnimationFrame(callback) {
+          return this.global.requestAnimationFrame(callback);
         }
       };
 

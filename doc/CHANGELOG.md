@@ -1,3 +1,12 @@
+### 1.0.0-beta.1.0.1 (2015-12-16)
+
+
+#### Features
+
+* **PAL:** requestAnimationFrame and performance APIs ([8427b1f2](http://github.com/aurelia/pal-browser/commit/8427b1f26c93033973cdfb91c4ec0c57ccf7326c))
+* **performance:** performance API polyfill ([9b706b38](http://github.com/aurelia/pal-browser/commit/9b706b38296a586f7716ae433ec8b603bc678b5e))
+
+
 ### 1.0.0-beta.1 (2015-11-15)
 
 

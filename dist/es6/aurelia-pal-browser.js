@@ -195,6 +195,34 @@ export function _ensureClassList(): void {
   }
 }
 
+export function _ensurePerformance(): void {
+  // performance polyfill. Copied from https://gist.github.com/paulirish/5438650
+
+  // https://gist.github.com/paulirish/5438650
+  // @license http://opensource.org/licenses/MIT
+  // copyright Paul Irish 2015
+
+  if ('performance' in window === false) {
+    window.performance = {};
+  }
+
+  Date.now = (Date.now || function() {  // thanks IE8
+    return new Date().getTime();
+  });
+
+  if ('now' in window.performance === false) {
+    let nowOffset = Date.now();
+
+    if (performance.timing && performance.timing.navigationStart) {
+      nowOffset = performance.timing.navigationStart;
+    }
+
+    window.performance.now = function now() {
+      return Date.now() - nowOffset;
+    };
+  }
+}
+
 export function _ensureCustomEvent(): void {
   if (!window.CustomEvent || typeof window.CustomEvent !== 'function') {
     let CustomEvent = function(event, params) {
@@ -477,6 +505,10 @@ export const _PLATFORM = {
   },
   removeEventListener(eventName: string, callback: Function, capture: boolean): void {
     this.global.removeEventListener(eventName, callback, capture);
+  },
+  performance: window.performance,
+  requestAnimationFrame(callback: Function): number {
+    return this.global.requestAnimationFrame(callback);
   }
 };
 
@@ -497,6 +529,7 @@ export function initialize(): void {
   _ensureHTMLTemplateElement();
   _ensureElementMatches();
   _ensureClassList();
+  _ensurePerformance();
 
   initializePAL((platform, feature, dom) => {
     Object.assign(platform, _PLATFORM);

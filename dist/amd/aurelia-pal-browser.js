@@ -4,6 +4,7 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
   exports.__esModule = true;
   exports._ensureFunctionName = _ensureFunctionName;
   exports._ensureClassList = _ensureClassList;
+  exports._ensurePerformance = _ensurePerformance;
   exports._ensureCustomEvent = _ensureCustomEvent;
   exports._ensureElementMatches = _ensureElementMatches;
   exports._ensureHTMLTemplateElement = _ensureHTMLTemplateElement;
@@ -185,6 +186,32 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
       }
 
       testElement = null;
+    }
+  }
+
+  function _ensurePerformance() {
+    // @license http://opensource.org/licenses/MIT
+
+    if ('performance' in window === false) {
+      window.performance = {};
+    }
+
+    Date.now = Date.now || function () {
+      return new Date().getTime();
+    };
+
+    if ('now' in window.performance === false) {
+      (function () {
+        var nowOffset = Date.now();
+
+        if (performance.timing && performance.timing.navigationStart) {
+          nowOffset = performance.timing.navigationStart;
+        }
+
+        window.performance.now = function now() {
+          return Date.now() - nowOffset;
+        };
+      })();
     }
   }
 
@@ -463,6 +490,10 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
     },
     removeEventListener: function removeEventListener(eventName, callback, capture) {
       this.global.removeEventListener(eventName, callback, capture);
+    },
+    performance: window.performance,
+    requestAnimationFrame: function requestAnimationFrame(callback) {
+      return this.global.requestAnimationFrame(callback);
     }
   };
 
@@ -481,6 +512,7 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
     _ensureHTMLTemplateElement();
     _ensureElementMatches();
     _ensureClassList();
+    _ensurePerformance();
 
     _aureliaPal.initializePAL(function (platform, feature, dom) {
       Object.assign(platform, _PLATFORM);
