@@ -5,23 +5,23 @@ export function _ensurePerformance(): void {
   // @license http://opensource.org/licenses/MIT
   // copyright Paul Irish 2015
 
-  if ("performance" in window == false) {
+  if ('performance' in window === false) {
     window.performance = {};
   }
 
-  Date.now = (Date.now || function () {  // thanks IE8
+  Date.now = (Date.now || function() {  // thanks IE8
     return new Date().getTime();
   });
 
-  if ("now" in window.performance == false) {
-    var nowOffset = Date.now();
+  if ('now' in window.performance === false) {
+    let nowOffset = Date.now();
 
     if (performance.timing && performance.timing.navigationStart) {
-      nowOffset = performance.timing.navigationStart
+      nowOffset = performance.timing.navigationStart;
     }
 
     window.performance.now = function now() {
       return Date.now() - nowOffset;
-    }
+    };
   }
 }
