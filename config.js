@@ -13,7 +13,7 @@ System.config({
   },
 
   map: {
-    "aurelia-pal": "npm:aurelia-pal@1.0.0-beta.1.0.1",
+    "aurelia-pal": "npm:aurelia-pal@1.0.0-beta.1.0.2",
     "babel": "npm:babel-core@5.8.34",
     "babel-runtime": "npm:babel-runtime@5.8.34",
     "core-js": "npm:core-js@1.2.6",
