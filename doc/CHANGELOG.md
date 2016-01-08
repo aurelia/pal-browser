@@ -1,3 +1,12 @@
+### 1.0.0-beta.1.0.2 (2016-01-08)
+
+
+#### Bug Fixes
+
+* **feature:** remove Obect/Array observe detection ([ecf35855](http://github.com/aurelia/pal-browser/commit/ecf358551a7958a6996fb78d2e604356a536bf30))
+* **package:** add missing core-js dependency ([08ab345a](http://github.com/aurelia/pal-browser/commit/08ab345af92d9ba8ddf2ba324a926e2e689c3adf))
+
+
 ### 1.0.0-beta.1.0.1 (2015-12-16)
 
 
