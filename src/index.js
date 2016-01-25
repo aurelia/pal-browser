@@ -1,3 +1,4 @@
+import 'core-js';
 import {initializePAL} from 'aurelia-pal';
 import {_PLATFORM} from './platform';
 import {_FEATURE} from './feature';

@@ -35,7 +35,8 @@
     }
   },
   "dependencies": {
-    "aurelia-pal": "^1.0.0-beta.1.0.1"
+    "aurelia-pal": "^1.0.0-beta.1.0.1",
+    "core-js": "^1.2.6"
   },
   "devDependencies": {
     "aurelia-tools": "^0.1.12",
