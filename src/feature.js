@@ -11,3 +11,7 @@ _FEATURE.scopedCSS = (function() {
 _FEATURE.htmlTemplateElement = (function() {
   return 'content' in document.createElement('template');
 })();
+
+_FEATURE.mutationObserver = (function() {
+  return !!(window.MutationObserver || window.WebKitMutationObserver);
+})();
