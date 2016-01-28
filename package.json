@@ -1,6 +1,6 @@
 {
   "name": "aurelia-pal-browser",
-  "version": "1.0.0-beta.1.1.0",
+  "version": "1.0.0-beta.1.1.1",
   "description": "The browser-specific implementation of Aurelia's platform abstraction layer.",
   "keywords": [
     "aurelia",
@@ -22,8 +22,8 @@
   "format": "cjs",
   "jspm": {
     "peerDependencies": {
-      "aurelia-pal": "npm:aurelia-pal@^1.0.0-beta.1.1.0",
-      "core-js": "npm:core-js@^2.0.3"
+      "aurelia-pal": "^1.0.0-beta.1.1.0",
+      "core-js": "^2.0.3"
     },
     "devDependencies": {
       "babel": "npm:babel-core@^5.8.22",
