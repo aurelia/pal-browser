@@ -1,3 +1,17 @@
+## 1.0.0-beta.1.1.0 (2016-01-28)
+
+
+#### Bug Fixes
+
+* **index:** add core-js import ([162cfbf3](http://github.com/aurelia/pal-browser/commit/162cfbf3208b0123a9860f4a3b2dbfd4559d9b40), closes [#2](http://github.com/aurelia/pal-browser/issues/2))
+
+
+#### Features
+
+* **all:** update for jspm; update core-js and aurelia deps ([9d870d29](http://github.com/aurelia/pal-browser/commit/9d870d2948ba93706fce9053c979bf8ebe5a5b0b))
+* **feature:** add mutation observer feature detection ([3add002e](http://github.com/aurelia/pal-browser/commit/3add002e5531401cf7e97f46d411225c6ad9621e))
+
+
 ### 1.0.0-beta.1.0.3 (2016-01-08)
 
 

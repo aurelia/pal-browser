@@ -1,4 +1,4 @@
-System.register(['aurelia-pal'], function (_export) {
+System.register(['core-js', 'aurelia-pal'], function (_export) {
   'use strict';
 
   var initializePAL, _FEATURE, shadowPoly, _DOM, _PLATFORM, isInitialized;
@@ -352,7 +352,7 @@ System.register(['aurelia-pal'], function (_export) {
   }
 
   return {
-    setters: [function (_aureliaPal) {
+    setters: [function (_coreJs) {}, function (_aureliaPal) {
       initializePAL = _aureliaPal.initializePAL;
     }],
     execute: function () {
@@ -370,6 +370,10 @@ System.register(['aurelia-pal'], function (_export) {
 
       _FEATURE.htmlTemplateElement = (function () {
         return 'content' in document.createElement('template');
+      })();
+
+      _FEATURE.mutationObserver = (function () {
+        return !!(window.MutationObserver || window.WebKitMutationObserver);
       })();
 
       shadowPoly = window.ShadowDOMPolyfill || null;

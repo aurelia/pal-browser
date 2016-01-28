@@ -1,4 +1,4 @@
-define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
+define(['exports', 'core-js', 'aurelia-pal'], function (exports, _coreJs, _aureliaPal) {
   'use strict';
 
   exports.__esModule = true;
@@ -254,6 +254,10 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
 
   _FEATURE.htmlTemplateElement = (function () {
     return 'content' in document.createElement('template');
+  })();
+
+  _FEATURE.mutationObserver = (function () {
+    return !!(window.MutationObserver || window.WebKitMutationObserver);
   })();
 
   function _ensureHTMLTemplateElement() {

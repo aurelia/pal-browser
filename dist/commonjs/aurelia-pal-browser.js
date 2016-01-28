@@ -9,6 +9,8 @@ exports._ensureElementMatches = _ensureElementMatches;
 exports._ensureHTMLTemplateElement = _ensureHTMLTemplateElement;
 exports.initialize = initialize;
 
+require('core-js');
+
 var _aureliaPal = require('aurelia-pal');
 
 function _ensureFunctionName() {
@@ -255,6 +257,10 @@ _FEATURE.scopedCSS = (function () {
 
 _FEATURE.htmlTemplateElement = (function () {
   return 'content' in document.createElement('template');
+})();
+
+_FEATURE.mutationObserver = (function () {
+  return !!(window.MutationObserver || window.WebKitMutationObserver);
 })();
 
 function _ensureHTMLTemplateElement() {

@@ -1,3 +1,4 @@
+import 'core-js';
 import {initializePAL} from 'aurelia-pal';
 
 export function _ensureFunctionName(): void {
@@ -263,6 +264,10 @@ _FEATURE.scopedCSS = (function() {
 
 _FEATURE.htmlTemplateElement = (function() {
   return 'content' in document.createElement('template');
+})();
+
+_FEATURE.mutationObserver = (function() {
+  return !!(window.MutationObserver || window.WebKitMutationObserver);
 })();
 
 export function _ensureHTMLTemplateElement(): void {
