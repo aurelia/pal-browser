@@ -9,10 +9,10 @@ export const _DOM = {
   Element: Element,
   SVGElement: SVGElement,
   boundary: 'aurelia-dom-boundary',
-  addEventListener(eventName: string, callback: Function, capture: boolean): void {
+  addEventListener(eventName: string, callback: Function, capture?: boolean): void {
     document.addEventListener(eventName, callback, capture);
   },
-  removeEventListener(eventName: string, callback: Function, capture: boolean): void {
+  removeEventListener(eventName: string, callback: Function, capture?: boolean): void {
     document.removeEventListener(eventName, callback, capture);
   },
   adoptNode(node: Node) {
@@ -65,10 +65,10 @@ export const _DOM = {
 
     return _FEATURE.ensureHTMLTemplateElement(temp);
   },
-  appendNode(newNode: Node, parentNode?:Node): void {
+  appendNode(newNode: Node, parentNode?: Node): void {
     (parentNode || document.body).appendChild(newNode);
   },
-  replaceNode(newNode: Node, node: Node, parentNode: Node): void {
+  replaceNode(newNode: Node, node: Node, parentNode?: Node): void {
     if (node.parentNode) {
       node.parentNode.replaceChild(newNode, node);
     } else if (shadowPoly !== null) { //HACK: IE template element and shadow dom polyfills not quite right...
@@ -80,7 +80,7 @@ export const _DOM = {
       parentNode.replaceChild(newNode, node);
     }
   },
-  removeNode(node: Node, parentNode: Node): void {
+  removeNode(node: Node, parentNode?: Node): void {
     if (node.parentNode) {
       node.parentNode.removeChild(node);
     } else if (shadowPoly !== null) { //HACK: IE template element and shadow dom polyfills not quite right...
@@ -91,7 +91,7 @@ export const _DOM = {
       parentNode.removeChild(node);
     }
   },
-  injectStyles(styles: string, destination?: Element, prepend?:boolean): Node {
+  injectStyles(styles: string, destination?: Element, prepend?: boolean): Node {
     let node = document.createElement('style');
     node.innerHTML = styles;
     node.type = 'text/css';
