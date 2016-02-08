@@ -1,3 +1,11 @@
+### 1.0.0-beta.1.1.3 (2016-02-08)
+
+
+#### Bug Fixes
+
+* **dom:** mark optional parameters ([7355b4ae](http://github.com/aurelia/pal-browser/commit/7355b4aeb3249187c79f2ab1aece44679632fbab))
+
+
 ## 1.0.0-beta.1.1.2 (2016-01-28)
 
 * fix package metadata for jspm
