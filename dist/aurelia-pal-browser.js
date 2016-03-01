@@ -1,4 +1,3 @@
-import 'core-js';
 import {initializePAL} from 'aurelia-pal';
 
 export function _ensureFunctionName(): void {

@@ -9,8 +9,6 @@ exports._ensureElementMatches = _ensureElementMatches;
 exports._ensureHTMLTemplateElement = _ensureHTMLTemplateElement;
 exports.initialize = initialize;
 
-require('core-js');
-
 var _aureliaPal = require('aurelia-pal');
 
 function _ensureFunctionName() {

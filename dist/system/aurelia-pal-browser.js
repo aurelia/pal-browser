@@ -1,4 +1,4 @@
-System.register(['core-js', 'aurelia-pal'], function (_export) {
+System.register(['aurelia-pal'], function (_export) {
   'use strict';
 
   var initializePAL, _FEATURE, shadowPoly, _DOM, _PLATFORM, isInitialized;
@@ -352,7 +352,7 @@ System.register(['core-js', 'aurelia-pal'], function (_export) {
   }
 
   return {
-    setters: [function (_coreJs) {}, function (_aureliaPal) {
+    setters: [function (_aureliaPal) {
       initializePAL = _aureliaPal.initializePAL;
     }],
     execute: function () {

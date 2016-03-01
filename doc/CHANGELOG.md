@@ -1,3 +1,11 @@
+### 1.0.0-beta.1.1.4 (2016-03-01)
+
+
+#### Bug Fixes
+
+* **all:** remove core-js ([7eb2303d](http://github.com/aurelia/pal-browser/commit/7eb2303de6b066aa051906b9959d6b96b2e1e09e))
+
+
 ### 1.0.0-beta.1.1.3 (2016-02-08)
 
 

@@ -1,5 +1,4 @@
 declare module 'aurelia-pal-browser' {
-  import 'core-js';
   import { initializePAL }  from 'aurelia-pal';
   
   /**
