@@ -1,5 +1,7 @@
 declare module 'aurelia-pal-browser' {
-  import { initializePAL }  from 'aurelia-pal';
+  import {
+    initializePAL
+  } from 'aurelia-pal';
   
   /**
   * Initializes the PAL with the Browser-targeted implementation.

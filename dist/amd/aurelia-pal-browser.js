@@ -1,7 +1,10 @@
 define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
   'use strict';
 
-  exports.__esModule = true;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports._PLATFORM = exports._DOM = exports._FEATURE = undefined;
   exports._ensureFunctionName = _ensureFunctionName;
   exports._ensureClassList = _ensureClassList;
   exports._ensurePerformance = _ensurePerformance;
@@ -9,7 +12,6 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
   exports._ensureElementMatches = _ensureElementMatches;
   exports._ensureHTMLTemplateElement = _ensureHTMLTemplateElement;
   exports.initialize = initialize;
-
   function _ensureFunctionName() {
     function test() {}
 
@@ -81,7 +83,7 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
           var tokens = arguments;
           var i = 0;
           var ii = tokens.length;
-          var token = undefined;
+          var token = void 0;
           var updated = false;
 
           do {
@@ -101,9 +103,9 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
           var tokens = arguments;
           var i = 0;
           var ii = tokens.length;
-          var token = undefined;
+          var token = void 0;
           var updated = false;
-          var index = undefined;
+          var index = void 0;
 
           do {
             token = tokens[i] + '';
@@ -192,6 +194,7 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
   function _ensurePerformance() {
     // @license http://opensource.org/licenses/MIT
 
+
     if ('performance' in window === false) {
       window.performance = {};
     }
@@ -241,24 +244,23 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
     }
   }
 
-  var _FEATURE = {};
+  var _FEATURE = exports._FEATURE = {};
 
-  exports._FEATURE = _FEATURE;
-  _FEATURE.shadowDOM = (function () {
+  _FEATURE.shadowDOM = function () {
     return !!HTMLElement.prototype.createShadowRoot;
-  })();
+  }();
 
-  _FEATURE.scopedCSS = (function () {
+  _FEATURE.scopedCSS = function () {
     return 'scoped' in document.createElement('style');
-  })();
+  }();
 
-  _FEATURE.htmlTemplateElement = (function () {
+  _FEATURE.htmlTemplateElement = function () {
     return 'content' in document.createElement('template');
-  })();
+  }();
 
-  _FEATURE.mutationObserver = (function () {
+  _FEATURE.mutationObserver = function () {
     return !!(window.MutationObserver || window.WebKitMutationObserver);
-  })();
+  }();
 
   function _ensureHTMLTemplateElement() {
     function isSVGTemplate(el) {
@@ -269,7 +271,7 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
       var template = el.ownerDocument.createElement('template');
       var attrs = el.attributes;
       var length = attrs.length;
-      var attr = undefined;
+      var attr = void 0;
 
       el.parentNode.insertBefore(template, el);
 
@@ -286,7 +288,7 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
 
     function fixHTMLTemplateElement(template) {
       var content = template.content = document.createDocumentFragment();
-      var child = undefined;
+      var child = void 0;
 
       while (child = template.firstChild) {
         content.appendChild(child);
@@ -323,7 +325,7 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
 
   var shadowPoly = window.ShadowDOMPolyfill || null;
 
-  var _DOM = {
+  var _DOM = exports._DOM = {
     Element: Element,
     SVGElement: SVGElement,
     boundary: 'aurelia-dom-boundary',
@@ -424,8 +426,7 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
     }
   };
 
-  exports._DOM = _DOM;
-  var _PLATFORM = {
+  var _PLATFORM = exports._PLATFORM = {
     location: window.location,
     history: window.history,
     addEventListener: function addEventListener(eventName, callback, capture) {
@@ -434,13 +435,13 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
     removeEventListener: function removeEventListener(eventName, callback, capture) {
       this.global.removeEventListener(eventName, callback, capture);
     },
+
     performance: window.performance,
     requestAnimationFrame: function requestAnimationFrame(callback) {
       return this.global.requestAnimationFrame(callback);
     }
   };
 
-  exports._PLATFORM = _PLATFORM;
   var isInitialized = false;
 
   function initialize() {
@@ -457,7 +458,7 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
     _ensureClassList();
     _ensurePerformance();
 
-    _aureliaPal.initializePAL(function (platform, feature, dom) {
+    (0, _aureliaPal.initializePAL)(function (platform, feature, dom) {
       Object.assign(platform, _PLATFORM);
       Object.assign(feature, _FEATURE);
       Object.assign(dom, _DOM);
