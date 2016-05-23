@@ -255,7 +255,7 @@ System.register(['aurelia-pal'], function (_export, _context) {
       _export('_FEATURE', _FEATURE);
 
       _FEATURE.shadowDOM = function () {
-        return !!HTMLElement.prototype.createShadowRoot;
+        return !!HTMLElement.prototype.attachShadow;
       }();
 
       _FEATURE.scopedCSS = function () {

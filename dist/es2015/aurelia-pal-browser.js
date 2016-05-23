@@ -229,7 +229,7 @@ export function _ensureElementMatches() {
 export const _FEATURE = {};
 
 _FEATURE.shadowDOM = function () {
-  return !!HTMLElement.prototype.createShadowRoot;
+  return !!HTMLElement.prototype.attachShadow;
 }();
 
 _FEATURE.scopedCSS = function () {

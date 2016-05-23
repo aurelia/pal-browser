@@ -247,7 +247,7 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
   var _FEATURE = exports._FEATURE = {};
 
   _FEATURE.shadowDOM = function () {
-    return !!HTMLElement.prototype.createShadowRoot;
+    return !!HTMLElement.prototype.attachShadow;
   }();
 
   _FEATURE.scopedCSS = function () {

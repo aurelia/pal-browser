@@ -1,3 +1,11 @@
+### 1.0.0-beta.2.0.0 (2016-05-23)
+
+
+#### Features
+
+* **feature:** Implement Shadow DOM v1 Check (#4) ([4f9ba7e2](http://github.com/aurelia/pal-browser/commit/4f9ba7e21ee491c9619566995e20bfe80ac0a42c))
+
+
 ### 1.0.0-beta.1.2.1 (2016-05-10)
 
 
