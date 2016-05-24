@@ -4,6 +4,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports._PLATFORM = exports._DOM = exports._FEATURE = undefined;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
 exports._ensureFunctionName = _ensureFunctionName;
 exports._ensureClassList = _ensureClassList;
 exports._ensurePerformance = _ensurePerformance;
@@ -464,6 +467,28 @@ function initialize() {
     Object.assign(platform, _PLATFORM);
     Object.assign(feature, _FEATURE);
     Object.assign(dom, _DOM);
+
+    (function (global) {
+      global.console = global.console || {};
+      var con = global.console;
+      var prop = void 0;
+      var method = void 0;
+      var empty = {};
+      var dummy = function dummy() {};
+      var properties = 'memory'.split(',');
+      var methods = ('assert,clear,count,debug,dir,dirxml,error,exception,group,' + 'groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd,' + 'show,table,time,timeEnd,timeline,timelineEnd,timeStamp,trace,warn').split(',');
+      while (prop = properties.pop()) {
+        if (!con[prop]) con[prop] = empty;
+      }while (method = methods.pop()) {
+        if (!con[method]) con[method] = dummy;
+      }
+    })(platform.global);
+
+    if (platform.global.console && _typeof(console.log) === 'object') {
+      ['log', 'info', 'warn', 'error', 'assert', 'dir', 'clear', 'profile', 'profileEnd'].forEach(function (method) {
+        console[method] = this.bind(console[method], console);
+      }, Function.prototype.call);
+    }
 
     Object.defineProperty(dom, 'title', {
       get: function get() {

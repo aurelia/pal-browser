@@ -1,3 +1,11 @@
+### 1.0.0-beta.2.0.1 (2016-05-24)
+
+
+#### Features
+
+* **console:** add console fixes ([087faa34](http://github.com/aurelia/pal-browser/commit/087faa341972105a4220239e85b5b701fa605dee))
+
+
 ### 1.0.0-beta.2.0.0 (2016-05-23)
 
 
