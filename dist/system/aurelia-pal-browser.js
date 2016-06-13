@@ -1,6 +1,8 @@
 'use strict';
 
 System.register(['aurelia-pal'], function (_export, _context) {
+  "use strict";
+
   var initializePAL, _typeof, _FEATURE, shadowPoly, _DOM, _PLATFORM, isInitialized;
 
   return {

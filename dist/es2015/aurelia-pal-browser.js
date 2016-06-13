@@ -365,7 +365,7 @@ export const _DOM = {
 
     let temp = parser.firstElementChild;
     if (!temp || temp.nodeName !== 'TEMPLATE') {
-      throw new Error(`Template markup must be wrapped in a <template> element e.g. <template> <!-- markup here --> </template>`);
+      throw new Error('Template markup must be wrapped in a <template> element e.g. <template> <!-- markup here --> </template>');
     }
 
     return _FEATURE.ensureHTMLTemplateElement(temp);
