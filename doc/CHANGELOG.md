@@ -1,3 +1,13 @@
+<a name="1.0.0-rc.1.0.1"></a>
+# [1.0.0-rc.1.0.1](https://github.com/aurelia/pal-browser/compare/1.0.0-rc.1.0.0...v1.0.0-rc.1.0.1) (2016-07-12)
+
+
+### Bug Fixes
+
+* **dom:** only use parentNode is provided ([eff0211](https://github.com/aurelia/pal-browser/commit/eff0211))
+
+
+
 <a name="1.0.0-rc.1.0.0"></a>
 # [1.0.0-rc.1.0.0](https://github.com/aurelia/pal-browser/compare/1.0.0-beta.3.0.1...v1.0.0-rc.1.0.0) (2016-06-22)
 

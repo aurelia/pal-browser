@@ -412,12 +412,12 @@ export const _DOM = {
   removeNode(node: Node, parentNode?: Node): void {
     if (node.parentNode) {
       node.parentNode.removeChild(node);
-    } else if (shadowPoly !== null) { //HACK: IE template element and shadow dom polyfills not quite right...
-      shadowPoly.unwrap(parentNode).removeChild(
-        shadowPoly.unwrap(node)
-        );
-    } else { //HACK: same as above
-      parentNode.removeChild(node);
+    } else if (parentNode) {
+      if (shadowPoly !== null) { //HACK: IE template element and shadow dom polyfills not quite right...
+        shadowPoly.unwrap(parentNode).removeChild(shadowPoly.unwrap(node));
+      } else { //HACK: same as above
+        parentNode.removeChild(node);
+      }
     }
   },
   injectStyles(styles: string, destination?: Element, prepend?: boolean): Node {

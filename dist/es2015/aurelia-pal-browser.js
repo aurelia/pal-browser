@@ -385,10 +385,12 @@ export const _DOM = {
   removeNode(node, parentNode) {
     if (node.parentNode) {
       node.parentNode.removeChild(node);
-    } else if (shadowPoly !== null) {
-      shadowPoly.unwrap(parentNode).removeChild(shadowPoly.unwrap(node));
-    } else {
-      parentNode.removeChild(node);
+    } else if (parentNode) {
+      if (shadowPoly !== null) {
+        shadowPoly.unwrap(parentNode).removeChild(shadowPoly.unwrap(node));
+      } else {
+        parentNode.removeChild(node);
+      }
     }
   },
   injectStyles(styles, destination, prepend) {
