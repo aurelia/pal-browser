@@ -1,5 +1,20 @@
 import {initializePAL} from 'aurelia-pal';
 
+export const _PLATFORM = {
+  location: window.location,
+  history: window.history,
+  addEventListener(eventName: string, callback: Function, capture: boolean): void {
+    this.global.addEventListener(eventName, callback, capture);
+  },
+  removeEventListener(eventName: string, callback: Function, capture: boolean): void {
+    this.global.removeEventListener(eventName, callback, capture);
+  },
+  performance: window.performance,
+  requestAnimationFrame(callback: Function): number {
+    return this.global.requestAnimationFrame(callback);
+  }
+};
+
 export function _ensureFunctionName(): void {
   // Fix Function#name on browsers that do not support it (IE):
   function test() {}
@@ -221,6 +236,8 @@ export function _ensurePerformance(): void {
       return Date.now() - nowOffset;
     };
   }
+
+  _PLATFORM.performance = window.performance;
 }
 
 export function _ensureCustomEvent(): void {
@@ -434,21 +451,6 @@ export const _DOM = {
     }
 
     return node;
-  }
-};
-
-export const _PLATFORM = {
-  location: window.location,
-  history: window.history,
-  addEventListener(eventName: string, callback: Function, capture: boolean): void {
-    this.global.addEventListener(eventName, callback, capture);
-  },
-  removeEventListener(eventName: string, callback: Function, capture: boolean): void {
-    this.global.removeEventListener(eventName, callback, capture);
-  },
-  performance: window.performance,
-  requestAnimationFrame(callback: Function): number {
-    return this.global.requestAnimationFrame(callback);
   }
 };
 

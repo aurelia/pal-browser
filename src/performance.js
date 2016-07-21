@@ -1,3 +1,5 @@
+import {_PLATFORM} from './platform';
+
 export function _ensurePerformance(): void {
   // performance polyfill. Copied from https://gist.github.com/paulirish/5438650
 
@@ -24,4 +26,6 @@ export function _ensurePerformance(): void {
       return Date.now() - nowOffset;
     };
   }
+
+  _PLATFORM.performance = window.performance;
 }

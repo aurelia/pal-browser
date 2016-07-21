@@ -2,6 +2,22 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 import { initializePAL } from 'aurelia-pal';
 
+export var _PLATFORM = {
+  location: window.location,
+  history: window.history,
+  addEventListener: function addEventListener(eventName, callback, capture) {
+    this.global.addEventListener(eventName, callback, capture);
+  },
+  removeEventListener: function removeEventListener(eventName, callback, capture) {
+    this.global.removeEventListener(eventName, callback, capture);
+  },
+
+  performance: window.performance,
+  requestAnimationFrame: function requestAnimationFrame(callback) {
+    return this.global.requestAnimationFrame(callback);
+  }
+};
+
 export function _ensureFunctionName() {
   function test() {}
 
@@ -183,8 +199,6 @@ export function _ensureClassList() {
 
 export function _ensurePerformance() {
   // @license http://opensource.org/licenses/MIT
-
-
   if ('performance' in window === false) {
     window.performance = {};
   }
@@ -206,6 +220,8 @@ export function _ensurePerformance() {
       };
     })();
   }
+
+  _PLATFORM.performance = window.performance;
 }
 
 export function _ensureCustomEvent() {
@@ -415,22 +431,6 @@ export var _DOM = {
     }
 
     return node;
-  }
-};
-
-export var _PLATFORM = {
-  location: window.location,
-  history: window.history,
-  addEventListener: function addEventListener(eventName, callback, capture) {
-    this.global.addEventListener(eventName, callback, capture);
-  },
-  removeEventListener: function removeEventListener(eventName, callback, capture) {
-    this.global.removeEventListener(eventName, callback, capture);
-  },
-
-  performance: window.performance,
-  requestAnimationFrame: function requestAnimationFrame(callback) {
-    return this.global.requestAnimationFrame(callback);
   }
 };
 

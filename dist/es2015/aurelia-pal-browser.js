@@ -1,5 +1,20 @@
 import { initializePAL } from 'aurelia-pal';
 
+export const _PLATFORM = {
+  location: window.location,
+  history: window.history,
+  addEventListener(eventName, callback, capture) {
+    this.global.addEventListener(eventName, callback, capture);
+  },
+  removeEventListener(eventName, callback, capture) {
+    this.global.removeEventListener(eventName, callback, capture);
+  },
+  performance: window.performance,
+  requestAnimationFrame(callback) {
+    return this.global.requestAnimationFrame(callback);
+  }
+};
+
 export function _ensureFunctionName() {
   function test() {}
 
@@ -177,8 +192,6 @@ export function _ensureClassList() {
 
 export function _ensurePerformance() {
   // @license http://opensource.org/licenses/MIT
-
-
   if ('performance' in window === false) {
     window.performance = {};
   }
@@ -198,6 +211,8 @@ export function _ensurePerformance() {
       return Date.now() - nowOffset;
     };
   }
+
+  _PLATFORM.performance = window.performance;
 }
 
 export function _ensureCustomEvent() {
@@ -407,21 +422,6 @@ export const _DOM = {
     }
 
     return node;
-  }
-};
-
-export const _PLATFORM = {
-  location: window.location,
-  history: window.history,
-  addEventListener(eventName, callback, capture) {
-    this.global.addEventListener(eventName, callback, capture);
-  },
-  removeEventListener(eventName, callback, capture) {
-    this.global.removeEventListener(eventName, callback, capture);
-  },
-  performance: window.performance,
-  requestAnimationFrame(callback) {
-    return this.global.requestAnimationFrame(callback);
   }
 };
 

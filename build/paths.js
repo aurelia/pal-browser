@@ -41,6 +41,7 @@ var paths = {
 };
 
 paths.files = [
+  'platform.js',
   'function-name.js',
   'class-list.js',
   'performance.js',
@@ -49,7 +50,6 @@ paths.files = [
   'feature.js',
   'html-template-element.js',
   'dom.js',
-  'platform.js',
   'index.js'
 ].map(function(file){
   return paths.root + file;

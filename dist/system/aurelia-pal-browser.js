@@ -3,7 +3,7 @@
 System.register(['aurelia-pal'], function (_export, _context) {
   "use strict";
 
-  var initializePAL, _typeof, _FEATURE, shadowPoly, _DOM, _PLATFORM, isInitialized;
+  var initializePAL, _typeof, _PLATFORM, _FEATURE, shadowPoly, _DOM, isInitialized;
 
   return {
     setters: [function (_aureliaPal) {
@@ -15,6 +15,25 @@ System.register(['aurelia-pal'], function (_export, _context) {
       } : function (obj) {
         return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
       };
+
+      _export('_PLATFORM', _PLATFORM = {
+        location: window.location,
+        history: window.history,
+        addEventListener: function addEventListener(eventName, callback, capture) {
+          this.global.addEventListener(eventName, callback, capture);
+        },
+        removeEventListener: function removeEventListener(eventName, callback, capture) {
+          this.global.removeEventListener(eventName, callback, capture);
+        },
+
+        performance: window.performance,
+        requestAnimationFrame: function requestAnimationFrame(callback) {
+          return this.global.requestAnimationFrame(callback);
+        }
+      });
+
+      _export('_PLATFORM', _PLATFORM);
+
       function _ensureFunctionName() {
         function test() {}
 
@@ -200,8 +219,6 @@ System.register(['aurelia-pal'], function (_export, _context) {
 
       function _ensurePerformance() {
         // @license http://opensource.org/licenses/MIT
-
-
         if ('performance' in window === false) {
           window.performance = {};
         }
@@ -223,6 +240,8 @@ System.register(['aurelia-pal'], function (_export, _context) {
             };
           })();
         }
+
+        _PLATFORM.performance = window.performance;
       }
 
       _export('_ensurePerformance', _ensurePerformance);
@@ -446,24 +465,6 @@ System.register(['aurelia-pal'], function (_export, _context) {
       });
 
       _export('_DOM', _DOM);
-
-      _export('_PLATFORM', _PLATFORM = {
-        location: window.location,
-        history: window.history,
-        addEventListener: function addEventListener(eventName, callback, capture) {
-          this.global.addEventListener(eventName, callback, capture);
-        },
-        removeEventListener: function removeEventListener(eventName, callback, capture) {
-          this.global.removeEventListener(eventName, callback, capture);
-        },
-
-        performance: window.performance,
-        requestAnimationFrame: function requestAnimationFrame(callback) {
-          return this.global.requestAnimationFrame(callback);
-        }
-      });
-
-      _export('_PLATFORM', _PLATFORM);
 
       isInitialized = false;
       function initialize() {

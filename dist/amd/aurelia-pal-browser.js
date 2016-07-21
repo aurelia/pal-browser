@@ -4,7 +4,7 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports._PLATFORM = exports._DOM = exports._FEATURE = undefined;
+  exports._DOM = exports._FEATURE = exports._PLATFORM = undefined;
   exports._ensureFunctionName = _ensureFunctionName;
   exports._ensureClassList = _ensureClassList;
   exports._ensurePerformance = _ensurePerformance;
@@ -17,6 +17,22 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
     return typeof obj;
   } : function (obj) {
     return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+  };
+
+  var _PLATFORM = exports._PLATFORM = {
+    location: window.location,
+    history: window.history,
+    addEventListener: function addEventListener(eventName, callback, capture) {
+      this.global.addEventListener(eventName, callback, capture);
+    },
+    removeEventListener: function removeEventListener(eventName, callback, capture) {
+      this.global.removeEventListener(eventName, callback, capture);
+    },
+
+    performance: window.performance,
+    requestAnimationFrame: function requestAnimationFrame(callback) {
+      return this.global.requestAnimationFrame(callback);
+    }
   };
 
   function _ensureFunctionName() {
@@ -200,8 +216,6 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
 
   function _ensurePerformance() {
     // @license http://opensource.org/licenses/MIT
-
-
     if ('performance' in window === false) {
       window.performance = {};
     }
@@ -223,6 +237,8 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
         };
       })();
     }
+
+    _PLATFORM.performance = window.performance;
   }
 
   function _ensureCustomEvent() {
@@ -432,22 +448,6 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
       }
 
       return node;
-    }
-  };
-
-  var _PLATFORM = exports._PLATFORM = {
-    location: window.location,
-    history: window.history,
-    addEventListener: function addEventListener(eventName, callback, capture) {
-      this.global.addEventListener(eventName, callback, capture);
-    },
-    removeEventListener: function removeEventListener(eventName, callback, capture) {
-      this.global.removeEventListener(eventName, callback, capture);
-    },
-
-    performance: window.performance,
-    requestAnimationFrame: function requestAnimationFrame(callback) {
-      return this.global.requestAnimationFrame(callback);
     }
   };
 

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports._PLATFORM = exports._DOM = exports._FEATURE = undefined;
+exports._DOM = exports._FEATURE = exports._PLATFORM = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
@@ -16,6 +16,22 @@ exports._ensureHTMLTemplateElement = _ensureHTMLTemplateElement;
 exports.initialize = initialize;
 
 var _aureliaPal = require('aurelia-pal');
+
+var _PLATFORM = exports._PLATFORM = {
+  location: window.location,
+  history: window.history,
+  addEventListener: function addEventListener(eventName, callback, capture) {
+    this.global.addEventListener(eventName, callback, capture);
+  },
+  removeEventListener: function removeEventListener(eventName, callback, capture) {
+    this.global.removeEventListener(eventName, callback, capture);
+  },
+
+  performance: window.performance,
+  requestAnimationFrame: function requestAnimationFrame(callback) {
+    return this.global.requestAnimationFrame(callback);
+  }
+};
 
 function _ensureFunctionName() {
   function test() {}
@@ -198,8 +214,6 @@ function _ensureClassList() {
 
 function _ensurePerformance() {
   // @license http://opensource.org/licenses/MIT
-
-
   if ('performance' in window === false) {
     window.performance = {};
   }
@@ -221,6 +235,8 @@ function _ensurePerformance() {
       };
     })();
   }
+
+  _PLATFORM.performance = window.performance;
 }
 
 function _ensureCustomEvent() {
@@ -430,22 +446,6 @@ var _DOM = exports._DOM = {
     }
 
     return node;
-  }
-};
-
-var _PLATFORM = exports._PLATFORM = {
-  location: window.location,
-  history: window.history,
-  addEventListener: function addEventListener(eventName, callback, capture) {
-    this.global.addEventListener(eventName, callback, capture);
-  },
-  removeEventListener: function removeEventListener(eventName, callback, capture) {
-    this.global.removeEventListener(eventName, callback, capture);
-  },
-
-  performance: window.performance,
-  requestAnimationFrame: function requestAnimationFrame(callback) {
-    return this.global.requestAnimationFrame(callback);
   }
 };
 
