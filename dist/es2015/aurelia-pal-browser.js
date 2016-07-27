@@ -192,13 +192,11 @@ export function _ensureClassList() {
 
 export function _ensurePerformance() {
   // @license http://opensource.org/licenses/MIT
+
+
   if ('performance' in window === false) {
     window.performance = {};
   }
-
-  Date.now = Date.now || function () {
-    return new Date().getTime();
-  };
 
   if ('now' in window.performance === false) {
     let nowOffset = Date.now();

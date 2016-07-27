@@ -5,7 +5,7 @@ define(['exports', './aurelia-pal-browser'], function (exports, _aureliaPalBrows
     value: true
   });
   Object.keys(_aureliaPalBrowser).forEach(function (key) {
-    if (key === "default") return;
+    if (key === "default" || key === "__esModule") return;
     Object.defineProperty(exports, key, {
       enumerable: true,
       get: function () {

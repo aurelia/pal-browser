@@ -216,13 +216,11 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
 
   function _ensurePerformance() {
     // @license http://opensource.org/licenses/MIT
+
+
     if ('performance' in window === false) {
       window.performance = {};
     }
-
-    Date.now = Date.now || function () {
-      return new Date().getTime();
-    };
 
     if ('now' in window.performance === false) {
       (function () {
