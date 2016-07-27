@@ -1,3 +1,18 @@
+<a name="1.0.0"></a>
+# [1.0.0](https://github.com/aurelia/pal-browser/compare/1.0.0-rc.1.0.1...v1.0.0) (2016-07-27)
+
+
+### Bug Fixes
+
+* **polyfill:** assign PLATFORM.performance ([099d951](https://github.com/aurelia/pal-browser/commit/099d951)), closes [aurelia/pal-browser#6](https://github.com/aurelia/pal-browser/issues/6)
+
+
+### Performance Improvements
+
+* **polyfill:** remove Date.now polyfill ([#8](https://github.com/aurelia/pal-browser/issues/8)) ([27b1fb7](https://github.com/aurelia/pal-browser/commit/27b1fb7))
+
+
+
 <a name="1.0.0-rc.1.0.1"></a>
 # [1.0.0-rc.1.0.1](https://github.com/aurelia/pal-browser/compare/1.0.0-rc.1.0.0...v1.0.0-rc.1.0.1) (2016-07-12)
 
