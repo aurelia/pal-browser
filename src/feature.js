@@ -9,7 +9,9 @@ _FEATURE.scopedCSS = (function() {
 })();
 
 _FEATURE.htmlTemplateElement = (function() {
-  return 'content' in document.createElement('template');
+  var d = document.createElement("div");
+  d.innerHTML = "<template></template>";
+  return 'content' in d.children[0];
 })();
 
 _FEATURE.mutationObserver = (function() {
