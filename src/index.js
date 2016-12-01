@@ -13,7 +13,6 @@ import {_ensurePerformance} from './performance';
 * Initializes the PAL with the Browser-targeted implementation.
 */
 export function initialize(): void {
-  console.log(`initializing type 'browser'`);
   if (isInitialized) {
     return;
   }
