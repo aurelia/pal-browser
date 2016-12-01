@@ -1,4 +1,4 @@
-import {initializePAL} from 'aurelia-pal';
+import {initializePAL, isInitialized} from 'aurelia-pal';
 import {_PLATFORM} from './platform';
 import {_FEATURE} from './feature';
 import {_DOM} from './dom';
@@ -9,8 +9,6 @@ import {_ensureElementMatches} from './element-matches';
 import {_ensureClassList} from './class-list';
 import {_ensurePerformance} from './performance';
 
-let isInitialized = false;
-
 /**
 * Initializes the PAL with the Browser-targeted implementation.
 */
@@ -18,8 +16,6 @@ export function initialize(): void {
   if (isInitialized) {
     return;
   }
-
-  isInitialized = true;
 
   _ensureCustomEvent();
   _ensureFunctionName();
