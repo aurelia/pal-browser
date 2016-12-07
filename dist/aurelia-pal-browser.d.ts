@@ -1,5 +1,6 @@
 import {
-  initializePAL
+  initializePAL,
+  isInitialized
 } from 'aurelia-pal';
 
 /**

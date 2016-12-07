@@ -1,6 +1,6 @@
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-import { initializePAL } from 'aurelia-pal';
+import { initializePAL, isInitialized } from 'aurelia-pal';
 
 export var _PLATFORM = {
   location: window.location,
@@ -199,8 +199,6 @@ export function _ensureClassList() {
 
 export function _ensurePerformance() {
   // @license http://opensource.org/licenses/MIT
-
-
   if ('performance' in window === false) {
     window.performance = {};
   }
@@ -432,14 +430,10 @@ export var _DOM = {
   }
 };
 
-var isInitialized = false;
-
 export function initialize() {
   if (isInitialized) {
     return;
   }
-
-  isInitialized = true;
 
   _ensureCustomEvent();
   _ensureFunctionName();

@@ -16,7 +16,7 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
   var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
     return typeof obj;
   } : function (obj) {
-    return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+    return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
   };
 
   var _PLATFORM = exports._PLATFORM = {
@@ -216,8 +216,6 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
 
   function _ensurePerformance() {
     // @license http://opensource.org/licenses/MIT
-
-
     if ('performance' in window === false) {
       window.performance = {};
     }
@@ -449,14 +447,10 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
     }
   };
 
-  var isInitialized = false;
-
   function initialize() {
-    if (isInitialized) {
+    if (_aureliaPal.isInitialized) {
       return;
     }
-
-    isInitialized = true;
 
     _ensureCustomEvent();
     _ensureFunctionName();

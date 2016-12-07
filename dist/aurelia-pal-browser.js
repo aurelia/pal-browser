@@ -1,4 +1,4 @@
-import {initializePAL} from 'aurelia-pal';
+import {initializePAL,isInitialized} from 'aurelia-pal';
 
 export const _PLATFORM = {
   location: window.location,
@@ -450,8 +450,6 @@ export const _DOM = {
   }
 };
 
-let isInitialized = false;
-
 /**
 * Initializes the PAL with the Browser-targeted implementation.
 */
@@ -459,8 +457,6 @@ export function initialize(): void {
   if (isInitialized) {
     return;
   }
-
-  isInitialized = true;
 
   _ensureCustomEvent();
   _ensureFunctionName();

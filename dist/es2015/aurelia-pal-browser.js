@@ -1,4 +1,4 @@
-import { initializePAL } from 'aurelia-pal';
+import { initializePAL, isInitialized } from 'aurelia-pal';
 
 export const _PLATFORM = {
   location: window.location,
@@ -192,8 +192,6 @@ export function _ensureClassList() {
 
 export function _ensurePerformance() {
   // @license http://opensource.org/licenses/MIT
-
-
   if ('performance' in window === false) {
     window.performance = {};
   }
@@ -423,14 +421,10 @@ export const _DOM = {
   }
 };
 
-let isInitialized = false;
-
 export function initialize() {
   if (isInitialized) {
     return;
   }
-
-  isInitialized = true;
 
   _ensureCustomEvent();
   _ensureFunctionName();

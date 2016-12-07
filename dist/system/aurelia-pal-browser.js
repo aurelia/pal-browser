@@ -3,7 +3,7 @@
 System.register(['aurelia-pal'], function (_export, _context) {
   "use strict";
 
-  var initializePAL, _typeof, _PLATFORM, _FEATURE, shadowPoly, _DOM, isInitialized;
+  var initializePAL, isInitialized, _typeof, _PLATFORM, _FEATURE, shadowPoly, _DOM;
 
   function _ensureFunctionName() {
     function test() {}
@@ -190,8 +190,6 @@ System.register(['aurelia-pal'], function (_export, _context) {
 
   function _ensurePerformance() {
     // @license http://opensource.org/licenses/MIT
-
-
     if ('performance' in window === false) {
       window.performance = {};
     }
@@ -313,8 +311,6 @@ System.register(['aurelia-pal'], function (_export, _context) {
       return;
     }
 
-    isInitialized = true;
-
     _ensureCustomEvent();
     _ensureFunctionName();
     _ensureHTMLTemplateElement();
@@ -377,12 +373,13 @@ System.register(['aurelia-pal'], function (_export, _context) {
   return {
     setters: [function (_aureliaPal) {
       initializePAL = _aureliaPal.initializePAL;
+      isInitialized = _aureliaPal.isInitialized;
     }],
     execute: function () {
       _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
         return typeof obj;
       } : function (obj) {
-        return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
       };
 
       _export('_PLATFORM', _PLATFORM = {
@@ -529,8 +526,6 @@ System.register(['aurelia-pal'], function (_export, _context) {
       });
 
       _export('_DOM', _DOM);
-
-      isInitialized = false;
     }
   };
 });

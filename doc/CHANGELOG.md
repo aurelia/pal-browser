@@ -1,3 +1,13 @@
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/aurelia/pal-browser/compare/1.0.0...v1.1.0) (2016-12-07)
+
+
+### Features
+
+* **index:** move isInitialized to aurelia-pal ([#14](https://github.com/aurelia/pal-browser/issues/14)) ([13c3b77](https://github.com/aurelia/pal-browser/commit/13c3b77))
+
+
+
 <a name="1.0.0"></a>
 # [1.0.0](https://github.com/aurelia/pal-browser/compare/1.0.0-rc.1.0.1...v1.0.0) (2016-07-27)
 

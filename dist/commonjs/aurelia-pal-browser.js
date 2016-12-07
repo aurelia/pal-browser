@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports._DOM = exports._FEATURE = exports._PLATFORM = undefined;
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 exports._ensureFunctionName = _ensureFunctionName;
 exports._ensureClassList = _ensureClassList;
@@ -214,8 +214,6 @@ function _ensureClassList() {
 
 function _ensurePerformance() {
   // @license http://opensource.org/licenses/MIT
-
-
   if ('performance' in window === false) {
     window.performance = {};
   }
@@ -447,14 +445,10 @@ var _DOM = exports._DOM = {
   }
 };
 
-var isInitialized = false;
-
 function initialize() {
-  if (isInitialized) {
+  if (_aureliaPal.isInitialized) {
     return;
   }
-
-  isInitialized = true;
 
   _ensureCustomEvent();
   _ensureFunctionName();
