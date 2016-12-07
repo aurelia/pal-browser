@@ -30,7 +30,7 @@
       "aurelia-pal": "^1.0.0"
     },
     "dependencies": {
-      "aurelia-pal": "^1.0.0"
+      "aurelia-pal": "^1.1.0"
     },
     "devDependencies": {
       "babel": "babel-core@^5.8.22",
