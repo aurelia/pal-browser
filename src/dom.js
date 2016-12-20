@@ -6,8 +6,8 @@ let shadowPoly = window.ShadowDOMPolyfill || null;
 * Represents the core APIs of the DOM.
 */
 export const _DOM = {
-  Element: Element,
-  SVGElement: SVGElement,
+  Element: typeof Element !== 'undefined' && Element,
+  SVGElement: typeof SVGElement !== 'undefined' && SVGElement,
   boundary: 'aurelia-dom-boundary',
   addEventListener(eventName: string, callback: Function, capture?: boolean): void {
     document.addEventListener(eventName, callback, capture);

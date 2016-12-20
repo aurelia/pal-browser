@@ -1,17 +1,17 @@
 export const _FEATURE = {};
 
 _FEATURE.shadowDOM = (function() {
-  return !!HTMLElement.prototype.attachShadow;
+  return typeof HTMLElement !== 'undefined' && !!HTMLElement.prototype.attachShadow;
 })();
 
 _FEATURE.scopedCSS = (function() {
-  return 'scoped' in document.createElement('style');
+  return typeof document !== 'undefined' && 'scoped' in document.createElement('style');
 })();
 
 _FEATURE.htmlTemplateElement = (function() {
-  return 'content' in document.createElement('template');
+  return typeof document !== 'undefined' && 'content' in document.createElement('template');
 })();
 
 _FEATURE.mutationObserver = (function() {
-  return !!(window.MutationObserver || window.WebKitMutationObserver);
+  return typeof window !== 'undefined' && !!(window.MutationObserver || window.WebKitMutationObserver);
 })();
