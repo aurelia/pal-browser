@@ -1,6 +1,6 @@
 import {_PLATFORM} from './platform';
 
-export function _ensurePerformance(): void {
+if (typeof FEATURE_NO_IE === 'undefined') {
   // performance polyfill. Copied from https://gist.github.com/paulirish/5438650
 
   // https://gist.github.com/paulirish/5438650

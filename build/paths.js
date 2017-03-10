@@ -29,6 +29,7 @@ paths.files = [
   'function-name.js',
   'class-list.js',
   'performance.js',
+  'console.js',
   'custom-event.js',
   'element-matches.js',
   'feature.js',

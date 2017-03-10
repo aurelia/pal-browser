@@ -1,8 +1,6 @@
-export function _ensureElementMatches(): void {
-  if (Element && !Element.prototype.matches) {
-    let proto = Element.prototype;
-    proto.matches = proto.matchesSelector ||
-      proto.mozMatchesSelector || proto.msMatchesSelector ||
-      proto.oMatchesSelector || proto.webkitMatchesSelector;
-  }
+if (Element && !Element.prototype.matches) {
+  let proto = Element.prototype;
+  proto.matches = proto.matchesSelector ||
+    proto.mozMatchesSelector || proto.msMatchesSelector ||
+    proto.oMatchesSelector || proto.webkitMatchesSelector;
 }

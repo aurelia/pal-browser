@@ -1,4 +1,4 @@
-export function _ensureClassList(): void {
+if (typeof FEATURE_NO_IE === 'undefined') { 
   /*
    * classList polyfill. Forked from https://github.com/eligrey/classList.js
    *

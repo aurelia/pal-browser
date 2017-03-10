@@ -1,4 +1,4 @@
-export function _ensureFunctionName(): void {
+if (typeof FEATURE_NO_IE === 'undefined') {
   // Fix Function#name on browsers that do not support it (IE):
   function test() {}
 
