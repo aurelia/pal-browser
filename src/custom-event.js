@@ -1,4 +1,4 @@
-export function _ensureCustomEvent(): void {
+if (typeof FEATURE_NO_IE === 'undefined') {
   if (!window.CustomEvent || typeof window.CustomEvent !== 'function') {
     let CustomEvent = function(event, params) {
       params = params || {

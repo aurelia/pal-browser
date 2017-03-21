@@ -1,6 +1,6 @@
 import {_FEATURE} from './feature';
 
-export function _ensureHTMLTemplateElement(): void {
+if (typeof FEATURE_NO_IE === 'undefined') {
   function isSVGTemplate(el) {
     return el.tagName === 'template' &&
            el.namespaceURI === 'http://www.w3.org/2000/svg';
@@ -53,9 +53,7 @@ export function _ensureHTMLTemplateElement(): void {
     return template;
   }
 
-  if (_FEATURE.htmlTemplateElement) {
-    _FEATURE.ensureHTMLTemplateElement = function(template) { return template; };
-  } else {
+  if (!_FEATURE.htmlTemplateElement) {  
     _FEATURE.ensureHTMLTemplateElement = fixHTMLTemplateElementRoot;
   }
 }
