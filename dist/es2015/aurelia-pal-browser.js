@@ -15,7 +15,7 @@ export const _PLATFORM = {
   }
 };
 
-export function _ensureFunctionName() {
+if (typeof FEATURE_NO_IE === 'undefined') {
   function test() {}
 
   if (!test.name) {
@@ -30,7 +30,7 @@ export function _ensureFunctionName() {
   }
 }
 
-export function _ensureClassList() {
+if (typeof FEATURE_NO_IE === 'undefined') {
   if (!('classList' in document.createElement('_')) || document.createElementNS && !('classList' in document.createElementNS('http://www.w3.org/2000/svg', 'g'))) {
     let protoProp = 'prototype';
     let strTrim = String.prototype.trim;
@@ -190,7 +190,7 @@ export function _ensureClassList() {
   }
 }
 
-export function _ensurePerformance() {
+if (typeof FEATURE_NO_IE === 'undefined') {
   // @license http://opensource.org/licenses/MIT
   if ('performance' in window === false) {
     window.performance = {};
@@ -211,7 +211,23 @@ export function _ensurePerformance() {
   _PLATFORM.performance = window.performance;
 }
 
-export function _ensureCustomEvent() {
+if (typeof FEATURE_NO_IE === 'undefined') {
+  let con = window.console = window.console || {};
+  let nop = function () {};
+
+  if (!con.memory) con.memory = {};
+  ('assert,clear,count,debug,dir,dirxml,error,exception,group,' + 'groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd,' + 'show,table,time,timeEnd,timeline,timelineEnd,timeStamp,trace,warn').split(',').forEach(m => {
+    if (!con[m]) con[m] = nop;
+  });
+
+  if (typeof con.log === 'object') {
+    'log,info,warn,error,assert,dir,clear,profile,profileEnd'.split(',').forEach(function (method) {
+      console[method] = this.bind(console[method], console);
+    }, Function.prototype.call);
+  }
+}
+
+if (typeof FEATURE_NO_IE === 'undefined') {
   if (!window.CustomEvent || typeof window.CustomEvent !== 'function') {
     let CustomEvent = function (event, params) {
       params = params || {
@@ -230,32 +246,20 @@ export function _ensureCustomEvent() {
   }
 }
 
-export function _ensureElementMatches() {
-  if (Element && !Element.prototype.matches) {
-    let proto = Element.prototype;
-    proto.matches = proto.matchesSelector || proto.mozMatchesSelector || proto.msMatchesSelector || proto.oMatchesSelector || proto.webkitMatchesSelector;
-  }
+if (Element && !Element.prototype.matches) {
+  let proto = Element.prototype;
+  proto.matches = proto.matchesSelector || proto.mozMatchesSelector || proto.msMatchesSelector || proto.oMatchesSelector || proto.webkitMatchesSelector;
 }
 
-export const _FEATURE = {};
+export const _FEATURE = {
+  shadowDOM: !!HTMLElement.prototype.attachShadow,
+  scopedCSS: 'scoped' in document.createElement('style'),
+  htmlTemplateElement: 'content' in document.createElement('template'),
+  mutationObserver: !!(window.MutationObserver || window.WebKitMutationObserver),
+  ensureHTMLTemplateElement: t => t
+};
 
-_FEATURE.shadowDOM = function () {
-  return !!HTMLElement.prototype.attachShadow;
-}();
-
-_FEATURE.scopedCSS = function () {
-  return 'scoped' in document.createElement('style');
-}();
-
-_FEATURE.htmlTemplateElement = function () {
-  return 'content' in document.createElement('template');
-}();
-
-_FEATURE.mutationObserver = function () {
-  return !!(window.MutationObserver || window.WebKitMutationObserver);
-}();
-
-export function _ensureHTMLTemplateElement() {
+if (typeof FEATURE_NO_IE === 'undefined') {
   function isSVGTemplate(el) {
     return el.tagName === 'template' && el.namespaceURI === 'http://www.w3.org/2000/svg';
   }
@@ -307,11 +311,7 @@ export function _ensureHTMLTemplateElement() {
     return template;
   }
 
-  if (_FEATURE.htmlTemplateElement) {
-    _FEATURE.ensureHTMLTemplateElement = function (template) {
-      return template;
-    };
-  } else {
+  if (!_FEATURE.htmlTemplateElement) {
     _FEATURE.ensureHTMLTemplateElement = fixHTMLTemplateElementRoot;
   }
 }
@@ -426,56 +426,24 @@ export function initialize() {
     return;
   }
 
-  _ensureCustomEvent();
-  _ensureFunctionName();
-  _ensureHTMLTemplateElement();
-  _ensureElementMatches();
-  _ensureClassList();
-  _ensurePerformance();
-
   initializePAL((platform, feature, dom) => {
     Object.assign(platform, _PLATFORM);
     Object.assign(feature, _FEATURE);
     Object.assign(dom, _DOM);
 
-    (function (global) {
-      global.console = global.console || {};
-      let con = global.console;
-      let prop;
-      let method;
-      let empty = {};
-      let dummy = function () {};
-      let properties = 'memory'.split(',');
-      let methods = ('assert,clear,count,debug,dir,dirxml,error,exception,group,' + 'groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd,' + 'show,table,time,timeEnd,timeline,timelineEnd,timeStamp,trace,warn').split(',');
-      while (prop = properties.pop()) if (!con[prop]) con[prop] = empty;
-      while (method = methods.pop()) if (!con[method]) con[method] = dummy;
-    })(platform.global);
-
-    if (platform.global.console && typeof console.log === 'object') {
-      ['log', 'info', 'warn', 'error', 'assert', 'dir', 'clear', 'profile', 'profileEnd'].forEach(function (method) {
-        console[method] = this.bind(console[method], console);
-      }, Function.prototype.call);
-    }
-
     Object.defineProperty(dom, 'title', {
-      get: function () {
-        return document.title;
-      },
-      set: function (value) {
+      get: () => document.title,
+      set: value => {
         document.title = value;
       }
     });
 
     Object.defineProperty(dom, 'activeElement', {
-      get: function () {
-        return document.activeElement;
-      }
+      get: () => document.activeElement
     });
 
     Object.defineProperty(platform, 'XMLHttpRequest', {
-      get: function () {
-        return platform.global.XMLHttpRequest;
-      }
+      get: () => platform.global.XMLHttpRequest
     });
   });
 }

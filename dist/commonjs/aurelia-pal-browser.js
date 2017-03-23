@@ -7,12 +7,6 @@ exports._DOM = exports._FEATURE = exports._PLATFORM = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-exports._ensureFunctionName = _ensureFunctionName;
-exports._ensureClassList = _ensureClassList;
-exports._ensurePerformance = _ensurePerformance;
-exports._ensureCustomEvent = _ensureCustomEvent;
-exports._ensureElementMatches = _ensureElementMatches;
-exports._ensureHTMLTemplateElement = _ensureHTMLTemplateElement;
 exports.initialize = initialize;
 
 var _aureliaPal = require('aurelia-pal');
@@ -33,8 +27,8 @@ var _PLATFORM = exports._PLATFORM = {
   }
 };
 
-function _ensureFunctionName() {
-  function test() {}
+if (typeof FEATURE_NO_IE === 'undefined') {
+  var test = function test() {};
 
   if (!test.name) {
     Object.defineProperty(Function.prototype, 'name', {
@@ -48,7 +42,7 @@ function _ensureFunctionName() {
   }
 }
 
-function _ensureClassList() {
+if (typeof FEATURE_NO_IE === 'undefined') {
   if (!('classList' in document.createElement('_')) || document.createElementNS && !('classList' in document.createElementNS('http://www.w3.org/2000/svg', 'g'))) {
     (function () {
       var protoProp = 'prototype';
@@ -212,7 +206,7 @@ function _ensureClassList() {
   }
 }
 
-function _ensurePerformance() {
+if (typeof FEATURE_NO_IE === 'undefined') {
   // @license http://opensource.org/licenses/MIT
   if ('performance' in window === false) {
     window.performance = {};
@@ -235,7 +229,25 @@ function _ensurePerformance() {
   _PLATFORM.performance = window.performance;
 }
 
-function _ensureCustomEvent() {
+if (typeof FEATURE_NO_IE === 'undefined') {
+  (function () {
+    var con = window.console = window.console || {};
+    var nop = function nop() {};
+
+    if (!con.memory) con.memory = {};
+    ('assert,clear,count,debug,dir,dirxml,error,exception,group,' + 'groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd,' + 'show,table,time,timeEnd,timeline,timelineEnd,timeStamp,trace,warn').split(',').forEach(function (m) {
+      if (!con[m]) con[m] = nop;
+    });
+
+    if (_typeof(con.log) === 'object') {
+      'log,info,warn,error,assert,dir,clear,profile,profileEnd'.split(',').forEach(function (method) {
+        console[method] = this.bind(console[method], console);
+      }, Function.prototype.call);
+    }
+  })();
+}
+
+if (typeof FEATURE_NO_IE === 'undefined') {
   if (!window.CustomEvent || typeof window.CustomEvent !== 'function') {
     var _CustomEvent = function _CustomEvent(event, params) {
       params = params || {
@@ -254,90 +266,78 @@ function _ensureCustomEvent() {
   }
 }
 
-function _ensureElementMatches() {
-  if (Element && !Element.prototype.matches) {
-    var proto = Element.prototype;
-    proto.matches = proto.matchesSelector || proto.mozMatchesSelector || proto.msMatchesSelector || proto.oMatchesSelector || proto.webkitMatchesSelector;
-  }
+if (Element && !Element.prototype.matches) {
+  var proto = Element.prototype;
+  proto.matches = proto.matchesSelector || proto.mozMatchesSelector || proto.msMatchesSelector || proto.oMatchesSelector || proto.webkitMatchesSelector;
 }
 
-var _FEATURE = exports._FEATURE = {};
-
-_FEATURE.shadowDOM = function () {
-  return !!HTMLElement.prototype.attachShadow;
-}();
-
-_FEATURE.scopedCSS = function () {
-  return 'scoped' in document.createElement('style');
-}();
-
-_FEATURE.htmlTemplateElement = function () {
-  return 'content' in document.createElement('template');
-}();
-
-_FEATURE.mutationObserver = function () {
-  return !!(window.MutationObserver || window.WebKitMutationObserver);
-}();
-
-function _ensureHTMLTemplateElement() {
-  function isSVGTemplate(el) {
-    return el.tagName === 'template' && el.namespaceURI === 'http://www.w3.org/2000/svg';
+var _FEATURE = exports._FEATURE = {
+  shadowDOM: !!HTMLElement.prototype.attachShadow,
+  scopedCSS: 'scoped' in document.createElement('style'),
+  htmlTemplateElement: 'content' in document.createElement('template'),
+  mutationObserver: !!(window.MutationObserver || window.WebKitMutationObserver),
+  ensureHTMLTemplateElement: function ensureHTMLTemplateElement(t) {
+    return t;
   }
+};
 
-  function fixSVGTemplateElement(el) {
-    var template = el.ownerDocument.createElement('template');
-    var attrs = el.attributes;
-    var length = attrs.length;
-    var attr = void 0;
+if (typeof FEATURE_NO_IE === 'undefined') {
+  (function () {
+    var isSVGTemplate = function isSVGTemplate(el) {
+      return el.tagName === 'template' && el.namespaceURI === 'http://www.w3.org/2000/svg';
+    };
 
-    el.parentNode.insertBefore(template, el);
+    var fixSVGTemplateElement = function fixSVGTemplateElement(el) {
+      var template = el.ownerDocument.createElement('template');
+      var attrs = el.attributes;
+      var length = attrs.length;
+      var attr = void 0;
 
-    while (length-- > 0) {
-      attr = attrs[length];
-      template.setAttribute(attr.name, attr.value);
-      el.removeAttribute(attr.name);
-    }
+      el.parentNode.insertBefore(template, el);
 
-    el.parentNode.removeChild(el);
-
-    return fixHTMLTemplateElement(template);
-  }
-
-  function fixHTMLTemplateElement(template) {
-    var content = template.content = document.createDocumentFragment();
-    var child = void 0;
-
-    while (child = template.firstChild) {
-      content.appendChild(child);
-    }
-
-    return template;
-  }
-
-  function fixHTMLTemplateElementRoot(template) {
-    var content = fixHTMLTemplateElement(template).content;
-    var childTemplates = content.querySelectorAll('template');
-
-    for (var i = 0, ii = childTemplates.length; i < ii; ++i) {
-      var child = childTemplates[i];
-
-      if (isSVGTemplate(child)) {
-        fixSVGTemplateElement(child);
-      } else {
-        fixHTMLTemplateElement(child);
+      while (length-- > 0) {
+        attr = attrs[length];
+        template.setAttribute(attr.name, attr.value);
+        el.removeAttribute(attr.name);
       }
-    }
 
-    return template;
-  }
+      el.parentNode.removeChild(el);
 
-  if (_FEATURE.htmlTemplateElement) {
-    _FEATURE.ensureHTMLTemplateElement = function (template) {
+      return fixHTMLTemplateElement(template);
+    };
+
+    var fixHTMLTemplateElement = function fixHTMLTemplateElement(template) {
+      var content = template.content = document.createDocumentFragment();
+      var child = void 0;
+
+      while (child = template.firstChild) {
+        content.appendChild(child);
+      }
+
       return template;
     };
-  } else {
-    _FEATURE.ensureHTMLTemplateElement = fixHTMLTemplateElementRoot;
-  }
+
+    var fixHTMLTemplateElementRoot = function fixHTMLTemplateElementRoot(template) {
+      var content = fixHTMLTemplateElement(template).content;
+      var childTemplates = content.querySelectorAll('template');
+
+      for (var i = 0, ii = childTemplates.length; i < ii; ++i) {
+        var child = childTemplates[i];
+
+        if (isSVGTemplate(child)) {
+          fixSVGTemplateElement(child);
+        } else {
+          fixHTMLTemplateElement(child);
+        }
+      }
+
+      return template;
+    };
+
+    if (!_FEATURE.htmlTemplateElement) {
+      _FEATURE.ensureHTMLTemplateElement = fixHTMLTemplateElementRoot;
+    }
+  })();
 }
 
 var shadowPoly = window.ShadowDOMPolyfill || null;
@@ -450,39 +450,10 @@ function initialize() {
     return;
   }
 
-  _ensureCustomEvent();
-  _ensureFunctionName();
-  _ensureHTMLTemplateElement();
-  _ensureElementMatches();
-  _ensureClassList();
-  _ensurePerformance();
-
   (0, _aureliaPal.initializePAL)(function (platform, feature, dom) {
     Object.assign(platform, _PLATFORM);
     Object.assign(feature, _FEATURE);
     Object.assign(dom, _DOM);
-
-    (function (global) {
-      global.console = global.console || {};
-      var con = global.console;
-      var prop = void 0;
-      var method = void 0;
-      var empty = {};
-      var dummy = function dummy() {};
-      var properties = 'memory'.split(',');
-      var methods = ('assert,clear,count,debug,dir,dirxml,error,exception,group,' + 'groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd,' + 'show,table,time,timeEnd,timeline,timelineEnd,timeStamp,trace,warn').split(',');
-      while (prop = properties.pop()) {
-        if (!con[prop]) con[prop] = empty;
-      }while (method = methods.pop()) {
-        if (!con[method]) con[method] = dummy;
-      }
-    })(platform.global);
-
-    if (platform.global.console && _typeof(console.log) === 'object') {
-      ['log', 'info', 'warn', 'error', 'assert', 'dir', 'clear', 'profile', 'profileEnd'].forEach(function (method) {
-        console[method] = this.bind(console[method], console);
-      }, Function.prototype.call);
-    }
 
     Object.defineProperty(dom, 'title', {
       get: function get() {

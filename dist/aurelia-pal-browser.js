@@ -15,7 +15,7 @@ export const _PLATFORM = {
   }
 };
 
-export function _ensureFunctionName(): void {
+if (typeof FEATURE_NO_IE === 'undefined') {
   // Fix Function#name on browsers that do not support it (IE):
   function test() {}
 
@@ -32,7 +32,7 @@ export function _ensureFunctionName(): void {
   }
 }
 
-export function _ensureClassList(): void {
+if (typeof FEATURE_NO_IE === 'undefined') { 
   /*
    * classList polyfill. Forked from https://github.com/eligrey/classList.js
    *
@@ -210,7 +210,7 @@ export function _ensureClassList(): void {
   }
 }
 
-export function _ensurePerformance(): void {
+if (typeof FEATURE_NO_IE === 'undefined') {
   // performance polyfill. Copied from https://gist.github.com/paulirish/5438650
 
   // https://gist.github.com/paulirish/5438650
@@ -236,7 +236,36 @@ export function _ensurePerformance(): void {
   _PLATFORM.performance = window.performance;
 }
 
-export function _ensureCustomEvent(): void {
+if (typeof FEATURE_NO_IE === 'undefined') {
+  // References to IE 9 in this file mean the *real* IE 9 browser, not IE 11 in 9 emulation mode.
+  // Note that in IE 9, until the F12 are actually opened window.console is undefined!
+  let con = window.console = window.console || {};  
+  let nop = function() {};
+  // console.memory is actually Chrome-only at this point, 
+  // but Aurelia does not use it so we're cutting down on "polyfills" here.
+  // Moreover, that object is utterly useless in other browsers, as all stats would actually be 'undefined'
+  if (!con.memory) con.memory = {};
+  ('assert,clear,count,debug,dir,dirxml,error,exception,group,' +
+   'groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd,' +
+   'show,table,time,timeEnd,timeline,timelineEnd,timeStamp,trace,warn')
+    .split(',')
+    .forEach(m => { if (!con[m]) con[m] = nop; });
+
+  // This is really f***ed up IE 9 stuff.
+  // You can be in a situation where console.log is an object, not a function.
+  // And the magic voodoo below that should _not_ work (the Function.prototype.call.bind(object,...) part)
+  // actually kicks IE 9 into converting that object into a real function that actually logs stuff.
+  // See http://patik.com/blog/complete-cross-browser-console-log/
+  if (typeof con.log === 'object') {
+    'log,info,warn,error,assert,dir,clear,profile,profileEnd'
+      .split(',')
+      .forEach(function(method) {
+        console[method] = this.bind(console[method], console);
+      }, Function.prototype.call);
+  }
+}
+
+if (typeof FEATURE_NO_IE === 'undefined') {
   if (!window.CustomEvent || typeof window.CustomEvent !== 'function') {
     let CustomEvent = function(event, params) {
       params = params || {
@@ -255,34 +284,22 @@ export function _ensureCustomEvent(): void {
   }
 }
 
-export function _ensureElementMatches(): void {
-  if (Element && !Element.prototype.matches) {
-    let proto = Element.prototype;
-    proto.matches = proto.matchesSelector ||
-      proto.mozMatchesSelector || proto.msMatchesSelector ||
-      proto.oMatchesSelector || proto.webkitMatchesSelector;
-  }
+if (Element && !Element.prototype.matches) {
+  let proto = Element.prototype;
+  proto.matches = proto.matchesSelector ||
+    proto.mozMatchesSelector || proto.msMatchesSelector ||
+    proto.oMatchesSelector || proto.webkitMatchesSelector;
 }
 
-export const _FEATURE = {};
+export const _FEATURE = {
+  shadowDOM: !!HTMLElement.prototype.attachShadow,
+  scopedCSS: 'scoped' in document.createElement('style'),
+  htmlTemplateElement: 'content' in document.createElement('template'),
+  mutationObserver: !!(window.MutationObserver || window.WebKitMutationObserver),
+  ensureHTMLTemplateElement: t => t,
+};
 
-_FEATURE.shadowDOM = (function() {
-  return !!HTMLElement.prototype.attachShadow;
-})();
-
-_FEATURE.scopedCSS = (function() {
-  return 'scoped' in document.createElement('style');
-})();
-
-_FEATURE.htmlTemplateElement = (function() {
-  return 'content' in document.createElement('template');
-})();
-
-_FEATURE.mutationObserver = (function() {
-  return !!(window.MutationObserver || window.WebKitMutationObserver);
-})();
-
-export function _ensureHTMLTemplateElement(): void {
+if (typeof FEATURE_NO_IE === 'undefined') {
   function isSVGTemplate(el) {
     return el.tagName === 'template' &&
            el.namespaceURI === 'http://www.w3.org/2000/svg';
@@ -335,9 +352,7 @@ export function _ensureHTMLTemplateElement(): void {
     return template;
   }
 
-  if (_FEATURE.htmlTemplateElement) {
-    _FEATURE.ensureHTMLTemplateElement = function(template) { return template; };
-  } else {
+  if (!_FEATURE.htmlTemplateElement) {  
     _FEATURE.ensureHTMLTemplateElement = fixHTMLTemplateElementRoot;
   }
 }
@@ -450,6 +465,16 @@ export const _DOM = {
   }
 };
 
+// DOM polyfills
+// Actually inlined by our build because of build/paths.js but `import "m"` is not properly removed!?
+// import './console';
+// import './custom-event';
+// import './function-name';
+// import './html-template-element';
+// import './element-matches';
+// import './class-list';
+// import './performance';
+
 /**
 * Initializes the PAL with the Browser-targeted implementation.
 */
@@ -458,58 +483,22 @@ export function initialize(): void {
     return;
   }
 
-  _ensureCustomEvent();
-  _ensureFunctionName();
-  _ensureHTMLTemplateElement();
-  _ensureElementMatches();
-  _ensureClassList();
-  _ensurePerformance();
-
   initializePAL((platform, feature, dom) => {
     Object.assign(platform, _PLATFORM);
     Object.assign(feature, _FEATURE);
     Object.assign(dom, _DOM);
 
-    (function(global) {
-      global.console = global.console || {};
-      let con = global.console;
-      let prop;
-      let method;
-      let empty = {};
-      let dummy = function() {};
-      let properties = 'memory'.split(',');
-      let methods = ('assert,clear,count,debug,dir,dirxml,error,exception,group,' +
-         'groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd,' +
-         'show,table,time,timeEnd,timeline,timelineEnd,timeStamp,trace,warn').split(',');
-      while (prop = properties.pop()) if (!con[prop]) con[prop] = empty;
-      while (method = methods.pop()) if (!con[method]) con[method] = dummy;
-    })(platform.global);
-
-    if (platform.global.console && typeof console.log === 'object') {
-      ['log', 'info', 'warn', 'error', 'assert', 'dir', 'clear', 'profile', 'profileEnd'].forEach(function(method) {
-        console[method] = this.bind(console[method], console);
-      }, Function.prototype.call);
-    }
-
     Object.defineProperty(dom, 'title', {
-      get: function() {
-        return document.title;
-      },
-      set: function(value) {
-        document.title = value;
-      }
+      get: () => document.title,
+      set: (value) => { document.title = value; }
     });
 
     Object.defineProperty(dom, 'activeElement', {
-      get: function() {
-        return document.activeElement;
-      }
+      get: () => document.activeElement
     });
 
     Object.defineProperty(platform, 'XMLHttpRequest', {
-      get: function() {
-        return platform.global.XMLHttpRequest;
-      }
+      get: () => platform.global.XMLHttpRequest
     });
   });
 }
