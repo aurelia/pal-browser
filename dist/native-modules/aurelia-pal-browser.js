@@ -21,7 +21,7 @@ export var _PLATFORM = {
 if (typeof FEATURE_NO_IE === 'undefined') {
   var test = function test() {};
 
-  if (!test.name) {
+  if (test.name === undefined) {
     Object.defineProperty(Function.prototype, 'name', {
       get: function get() {
         var name = this.toString().match(/^\s*function\s*(\S*)\s*\(/)[1];

@@ -1,3 +1,13 @@
+<a name="1.2.1"></a>
+## [1.2.1](https://github.com/aurelia/pal-browser/compare/1.2.0...v1.2.1) (2017-04-05)
+
+
+### Bug Fixes
+
+* **pal-browser:** regression in Function.name polyfill on iOS ([#20](https://github.com/aurelia/pal-browser/issues/20)) ([17d2eb7](https://github.com/aurelia/pal-browser/commit/17d2eb7))
+
+
+
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/aurelia/pal-browser/compare/1.1.0...v1.2.0) (2017-03-23)
 

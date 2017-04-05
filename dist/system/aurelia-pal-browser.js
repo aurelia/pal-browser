@@ -73,7 +73,7 @@ System.register(['aurelia-pal'], function (_export, _context) {
       if (typeof FEATURE_NO_IE === 'undefined') {
         test = function test() {};
 
-        if (!test.name) {
+        if (test.name === undefined) {
           Object.defineProperty(Function.prototype, 'name', {
             get: function get() {
               var name = this.toString().match(/^\s*function\s*(\S*)\s*\(/)[1];

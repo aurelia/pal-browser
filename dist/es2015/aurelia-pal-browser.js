@@ -18,7 +18,7 @@ export const _PLATFORM = {
 if (typeof FEATURE_NO_IE === 'undefined') {
   function test() {}
 
-  if (!test.name) {
+  if (test.name === undefined) {
     Object.defineProperty(Function.prototype, 'name', {
       get: function () {
         let name = this.toString().match(/^\s*function\s*(\S*)\s*\(/)[1];
