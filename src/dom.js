@@ -18,6 +18,9 @@ export const _DOM = {
   adoptNode(node: Node) {
     return document.adoptNode(node, true);//TODO: what is does the true mean? typo?
   },
+  createAttribute(name: string): Attr {
+    return document.createAttribute(name);
+  },
   createElement(tagName: string): Element {
     return document.createElement(tagName);
   },

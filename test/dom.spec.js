@@ -14,4 +14,10 @@ describe('dom', () => {
       expect(() => _DOM.createTemplateFromMarkup('<div>throw an error!</div>')).toThrow();
     });
   });
+
+  describe('createAttribute', () => {
+    it('should create an attribute', () => {
+      expect(() => _DOM.createAttribute('aurelia-app')).not.toBeFalsy();
+    });
+  });
 });
