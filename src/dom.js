@@ -33,6 +33,10 @@ export const _DOM = {
   createDocumentFragment(): DocumentFragment {
     return document.createDocumentFragment();
   },
+  createTemplateElement(): HTMLTemplateElement {
+    let template = document.createElement('template');
+    return _FEATURE.ensureHTMLTemplateElement(template);
+  },
   createMutationObserver(callback: Function): MutationObserver {
     return new (window.MutationObserver || window.WebKitMutationObserver)(callback);
   },
