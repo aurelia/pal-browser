@@ -1,3 +1,14 @@
+<a name="1.3.0"></a>
+# [1.3.0](https://github.com/aurelia/pal-browser/compare/1.2.1...v1.3.0) (2017-08-22)
+
+
+### Features
+
+* **dom:** add createAttribute function ([#21](https://github.com/aurelia/pal-browser/issues/21)) ([6759618](https://github.com/aurelia/pal-browser/commit/6759618))
+* **dom:** add createTemplateElement ([a04ca40](https://github.com/aurelia/pal-browser/commit/a04ca40))
+
+
+
 <a name="1.2.1"></a>
 ## [1.2.1](https://github.com/aurelia/pal-browser/compare/1.2.0...v1.2.1) (2017-04-05)
 

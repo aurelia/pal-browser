@@ -331,6 +331,9 @@ export const _DOM = {
   adoptNode(node) {
     return document.adoptNode(node, true);
   },
+  createAttribute(name) {
+    return document.createAttribute(name);
+  },
   createElement(tagName) {
     return document.createElement(tagName);
   },
@@ -342,6 +345,10 @@ export const _DOM = {
   },
   createDocumentFragment() {
     return document.createDocumentFragment();
+  },
+  createTemplateElement() {
+    let template = document.createElement('template');
+    return _FEATURE.ensureHTMLTemplateElement(template);
   },
   createMutationObserver(callback) {
     return new (window.MutationObserver || window.WebKitMutationObserver)(callback);

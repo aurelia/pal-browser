@@ -402,6 +402,9 @@ System.register(['aurelia-pal'], function (_export, _context) {
         adoptNode: function adoptNode(node) {
           return document.adoptNode(node, true);
         },
+        createAttribute: function createAttribute(name) {
+          return document.createAttribute(name);
+        },
         createElement: function createElement(tagName) {
           return document.createElement(tagName);
         },
@@ -413,6 +416,10 @@ System.register(['aurelia-pal'], function (_export, _context) {
         },
         createDocumentFragment: function createDocumentFragment() {
           return document.createDocumentFragment();
+        },
+        createTemplateElement: function createTemplateElement() {
+          var template = document.createElement('template');
+          return _FEATURE.ensureHTMLTemplateElement(template);
         },
         createMutationObserver: function createMutationObserver(callback) {
           return new (window.MutationObserver || window.WebKitMutationObserver)(callback);

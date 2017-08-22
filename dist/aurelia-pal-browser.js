@@ -34,7 +34,7 @@ if (typeof FEATURE_NO_IE === 'undefined') {
   }
 }
 
-if (typeof FEATURE_NO_IE === 'undefined') { 
+if (typeof FEATURE_NO_IE === 'undefined') {
   /*
    * classList polyfill. Forked from https://github.com/eligrey/classList.js
    *
@@ -241,9 +241,9 @@ if (typeof FEATURE_NO_IE === 'undefined') {
 if (typeof FEATURE_NO_IE === 'undefined') {
   // References to IE 9 in this file mean the *real* IE 9 browser, not IE 11 in 9 emulation mode.
   // Note that in IE 9, until the F12 are actually opened window.console is undefined!
-  let con = window.console = window.console || {};  
+  let con = window.console = window.console || {};
   let nop = function() {};
-  // console.memory is actually Chrome-only at this point, 
+  // console.memory is actually Chrome-only at this point,
   // but Aurelia does not use it so we're cutting down on "polyfills" here.
   // Moreover, that object is utterly useless in other browsers, as all stats would actually be 'undefined'
   if (!con.memory) con.memory = {};
@@ -298,7 +298,7 @@ export const _FEATURE = {
   scopedCSS: 'scoped' in document.createElement('style'),
   htmlTemplateElement: 'content' in document.createElement('template'),
   mutationObserver: !!(window.MutationObserver || window.WebKitMutationObserver),
-  ensureHTMLTemplateElement: t => t,
+  ensureHTMLTemplateElement: t => t
 };
 
 if (typeof FEATURE_NO_IE === 'undefined') {
@@ -377,6 +377,9 @@ export const _DOM = {
   adoptNode(node: Node) {
     return document.adoptNode(node, true);//TODO: what is does the true mean? typo?
   },
+  createAttribute(name: string): Attr {
+    return document.createAttribute(name);
+  },
   createElement(tagName: string): Element {
     return document.createElement(tagName);
   },
@@ -388,6 +391,10 @@ export const _DOM = {
   },
   createDocumentFragment(): DocumentFragment {
     return document.createDocumentFragment();
+  },
+  createTemplateElement(): HTMLTemplateElement {
+    let template = document.createElement('template');
+    return _FEATURE.ensureHTMLTemplateElement(template);
   },
   createMutationObserver(callback: Function): MutationObserver {
     return new (window.MutationObserver || window.WebKitMutationObserver)(callback);
