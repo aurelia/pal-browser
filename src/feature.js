@@ -3,5 +3,5 @@ export const _FEATURE = {
   scopedCSS: 'scoped' in document.createElement('style'),
   htmlTemplateElement: 'content' in document.createElement('template'),
   mutationObserver: !!(window.MutationObserver || window.WebKitMutationObserver),
-  ensureHTMLTemplateElement: t => t,
+  ensureHTMLTemplateElement: t => t
 };

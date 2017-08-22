@@ -1,4 +1,4 @@
-if (typeof FEATURE_NO_IE === 'undefined') { 
+if (typeof FEATURE_NO_IE === 'undefined') {
   /*
    * classList polyfill. Forked from https://github.com/eligrey/classList.js
    *

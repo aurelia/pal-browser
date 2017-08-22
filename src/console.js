@@ -1,9 +1,9 @@
 if (typeof FEATURE_NO_IE === 'undefined') {
   // References to IE 9 in this file mean the *real* IE 9 browser, not IE 11 in 9 emulation mode.
   // Note that in IE 9, until the F12 are actually opened window.console is undefined!
-  let con = window.console = window.console || {};  
+  let con = window.console = window.console || {};
   let nop = function() {};
-  // console.memory is actually Chrome-only at this point, 
+  // console.memory is actually Chrome-only at this point,
   // but Aurelia does not use it so we're cutting down on "polyfills" here.
   // Moreover, that object is utterly useless in other browsers, as all stats would actually be 'undefined'
   if (!con.memory) con.memory = {};
