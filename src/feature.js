@@ -1,7 +1,11 @@
 export const _FEATURE = {
   shadowDOM: !!HTMLElement.prototype.attachShadow,
   scopedCSS: 'scoped' in document.createElement('style'),
-  htmlTemplateElement: 'content' in document.createElement('template'),
+  htmlTemplateElement: (function () {
+    var d = document.createElement('div');
+    d.innerHTML = '<template></template>';
+    return 'content' in d.children[0];
+  })(),
   mutationObserver: !!(window.MutationObserver || window.WebKitMutationObserver),
   ensureHTMLTemplateElement: t => t
 };
