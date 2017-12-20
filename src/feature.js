@@ -1,8 +1,8 @@
 export const _FEATURE = {
   shadowDOM: !!HTMLElement.prototype.attachShadow,
   scopedCSS: 'scoped' in document.createElement('style'),
-  htmlTemplateElement: (function () {
-    var d = document.createElement('div');
+  htmlTemplateElement: (function() {
+    let d = document.createElement('div');
     d.innerHTML = '<template></template>';
     return 'content' in d.children[0];
   })(),
