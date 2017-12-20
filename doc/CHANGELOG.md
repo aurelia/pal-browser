@@ -1,3 +1,13 @@
+<a name="1.3.1"></a>
+## [1.3.1](https://github.com/aurelia/pal-browser/compare/1.3.0...v1.3.1) (2017-12-20)
+
+
+### Bug Fixes
+
+* **html-template-element:** fix unable to get property querySelectorAll error when using webcomponents-lite in IE11 ([#27](https://github.com/aurelia/pal-browser/issues/27)) ([9e4b62f](https://github.com/aurelia/pal-browser/commit/9e4b62f))
+
+
+
 <a name="1.3.0"></a>
 # [1.3.0](https://github.com/aurelia/pal-browser/compare/1.2.1...v1.3.0) (2017-08-22)
 
