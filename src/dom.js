@@ -99,22 +99,26 @@ export const _DOM = {
     }
   },
   injectStyles(styles: string, destination?: Element, prepend?: boolean, id?: string): Node {
-    let node = document.createElement('style');
-    node.innerHTML = styles;
-    node.type = 'text/css';
 
     if (id) {
         let oldStyle = document.getElementById(id);
         if (oldStyle) {
             let isStyleTag = oldStyle.tagName.toLowerCase() === 'style';
             if(isStyleTag) {
-                oldStyle.remove();
+                oldStyle.innerHTML = styles;
+                return;
             }
             else
             {
                 throw new Error('The id does not belong to the style tag.');
             }
         }
+    }
+    
+    let node = document.createElement('style');
+    node.innerHTML = styles;
+    node.type = 'text/css';
+    if (id) {
         node.id = id;
     }
     
