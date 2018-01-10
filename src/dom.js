@@ -106,7 +106,14 @@ export const _DOM = {
     if (id) {
         let oldStyle = document.getElementById(id);
         if (oldStyle) {
-            oldStyle.remove();
+            let isStyleTag = oldStyle.tagName.toLowerCase() === 'style';
+            if(isStyleTag) {
+                oldStyle.remove();
+            }
+            else
+            {
+                throw new Error('The id does not belong to the style tag.');
+            }
         }
         node.id = id;
     }
