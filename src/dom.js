@@ -110,7 +110,7 @@ export const _DOM = {
             }
             else
             {
-                throw new Error('The id does not belong to the style tag.');
+                throw new Error('The provided id does not indicate a style tag.');
             }
         }
     }
