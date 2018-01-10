@@ -98,11 +98,19 @@ export const _DOM = {
       }
     }
   },
-  injectStyles(styles: string, destination?: Element, prepend?: boolean): Node {
+  injectStyles(styles: string, destination?: Element, prepend?: boolean, id?: string): Node {
     let node = document.createElement('style');
     node.innerHTML = styles;
     node.type = 'text/css';
 
+    if (id) {
+        let oldStyle = document.getElementById(id);
+        if (oldStyle) {
+            oldStyle.remove();
+        }
+        node.id = id;
+    }
+    
     destination = destination || document.head;
 
     if (prepend && destination.childNodes.length > 0) {
