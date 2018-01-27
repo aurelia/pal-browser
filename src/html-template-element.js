@@ -53,7 +53,7 @@ if (typeof FEATURE_NO_IE === 'undefined') {
     return template;
   }
 
-  if (!_FEATURE.htmlTemplateElement) {  
+  if (!_FEATURE.htmlTemplateElement) {
     _FEATURE.ensureHTMLTemplateElement = fixHTMLTemplateElementRoot;
   }
 }
