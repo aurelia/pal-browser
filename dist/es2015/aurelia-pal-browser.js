@@ -415,10 +415,28 @@ export const _DOM = {
       }
     }
   },
-  injectStyles(styles, destination, prepend) {
+  injectStyles(styles, destination, prepend, id) {
+    if (id) {
+      let oldStyle = document.getElementById(id);
+      if (oldStyle) {
+        let isStyleTag = oldStyle.tagName.toLowerCase() === 'style';
+
+        if (isStyleTag) {
+          oldStyle.innerHTML = styles;
+          return;
+        }
+
+        throw new Error('The provided id does not indicate a style tag.');
+      }
+    }
+
     let node = document.createElement('style');
     node.innerHTML = styles;
     node.type = 'text/css';
+
+    if (id) {
+      node.id = id;
+    }
 
     destination = destination || document.head;
 

@@ -358,7 +358,7 @@ if (typeof FEATURE_NO_IE === 'undefined') {
     return template;
   }
 
-  if (!_FEATURE.htmlTemplateElement) {  
+  if (!_FEATURE.htmlTemplateElement) {
     _FEATURE.ensureHTMLTemplateElement = fixHTMLTemplateElementRoot;
   }
 }
@@ -461,10 +461,28 @@ export const _DOM = {
       }
     }
   },
-  injectStyles(styles: string, destination?: Element, prepend?: boolean): Node {
+  injectStyles(styles: string, destination?: Element, prepend?: boolean, id?: string): Node {
+    if (id) {
+      let oldStyle = document.getElementById(id);
+      if (oldStyle) {
+        let isStyleTag = oldStyle.tagName.toLowerCase() === 'style';
+
+        if (isStyleTag) {
+          oldStyle.innerHTML = styles;
+          return;
+        }
+
+        throw new Error('The provided id does not indicate a style tag.');
+      }
+    }
+
     let node = document.createElement('style');
     node.innerHTML = styles;
     node.type = 'text/css';
+
+    if (id) {
+      node.id = id;
+    }
 
     destination = destination || document.head;
 

@@ -441,10 +441,28 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
         }
       }
     },
-    injectStyles: function injectStyles(styles, destination, prepend) {
+    injectStyles: function injectStyles(styles, destination, prepend, id) {
+      if (id) {
+        var oldStyle = document.getElementById(id);
+        if (oldStyle) {
+          var isStyleTag = oldStyle.tagName.toLowerCase() === 'style';
+
+          if (isStyleTag) {
+            oldStyle.innerHTML = styles;
+            return;
+          }
+
+          throw new Error('The provided id does not indicate a style tag.');
+        }
+      }
+
       var node = document.createElement('style');
       node.innerHTML = styles;
       node.type = 'text/css';
+
+      if (id) {
+        node.id = id;
+      }
 
       destination = destination || document.head;
 
