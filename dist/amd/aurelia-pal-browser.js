@@ -350,6 +350,7 @@ define(['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
 
   var _DOM = exports._DOM = {
     Element: Element,
+    NodeList: NodeList,
     SVGElement: SVGElement,
     boundary: 'aurelia-dom-boundary',
     addEventListener: function addEventListener(eventName, callback, capture) {

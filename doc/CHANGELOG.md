@@ -1,3 +1,13 @@
+<a name="1.6.0"></a>
+# [1.6.0](https://github.com/aurelia/pal-browser/compare/1.4.0...v1.6.0) (2018-03-03)
+
+
+### Features
+
+* **dom:** add NodeList to global ([#31](https://github.com/aurelia/pal-browser/issues/31)) ([16cd315](https://github.com/aurelia/pal-browser/commit/16cd315))
+
+
+
 <a name="1.4.0"></a>
 # [1.4.0](https://github.com/aurelia/pal-browser/compare/1.3.1...v1.4.0) (2018-01-27)
 

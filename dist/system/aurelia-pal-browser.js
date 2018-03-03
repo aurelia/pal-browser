@@ -395,6 +395,7 @@ System.register(['aurelia-pal'], function (_export, _context) {
 
       _export('_DOM', _DOM = {
         Element: Element,
+        NodeList: NodeList,
         SVGElement: SVGElement,
         boundary: 'aurelia-dom-boundary',
         addEventListener: function addEventListener(eventName, callback, capture) {
