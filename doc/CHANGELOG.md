@@ -1,3 +1,13 @@
+<a name="1.7.0"></a>
+# [1.7.0](https://github.com/aurelia/pal-browser/compare/1.6.0...v1.7.0) (2018-03-06)
+
+
+### Features
+
+* **performance:** performance api update ([#32](https://github.com/aurelia/pal-browser/issues/32)) ([b1b488f](https://github.com/aurelia/pal-browser/commit/b1b488f))
+
+
+
 <a name="1.6.0"></a>
 # [1.6.0](https://github.com/aurelia/pal-browser/compare/1.4.0...v1.6.0) (2018-03-03)
 

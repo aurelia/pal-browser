@@ -207,26 +207,109 @@ if (typeof FEATURE_NO_IE === 'undefined') {
 }
 
 if (typeof FEATURE_NO_IE === 'undefined') {
-  // @license http://opensource.org/licenses/MIT
-  if ('performance' in window === false) {
-    window.performance = {};
-  }
-
-  if ('now' in window.performance === false) {
-    (function () {
-      var nowOffset = Date.now();
-
-      if (performance.timing && performance.timing.navigationStart) {
-        nowOffset = performance.timing.navigationStart;
+  (function () {
+    var _filterEntries = function _filterEntries(key, value) {
+      var i = 0,
+          n = _entries.length,
+          result = [];
+      for (; i < n; i++) {
+        if (_entries[i][key] == value) {
+          result.push(_entries[i]);
+        }
       }
+      return result;
+    };
 
-      window.performance.now = function now() {
-        return Date.now() - nowOffset;
+    var _clearEntries = function _clearEntries(type, name) {
+      var i = _entries.length,
+          entry;
+      while (i--) {
+        entry = _entries[i];
+        if (entry.entryType == type && (name === void 0 || entry.name == name)) {
+          _entries.splice(i, 1);
+        }
+      }
+    };
+
+    // @license http://opensource.org/licenses/MIT
+    if ('performance' in window === false) {
+      window.performance = {};
+    }
+
+    if ('now' in window.performance === false) {
+      (function () {
+        var nowOffset = Date.now();
+
+        if (performance.timing && performance.timing.navigationStart) {
+          nowOffset = performance.timing.navigationStart;
+        }
+
+        window.performance.now = function now() {
+          return Date.now() - nowOffset;
+        };
+      })();
+    }
+
+    var startOffset = Date.now ? Date.now() : +new Date();
+    var _entries = [];
+    var _marksIndex = {};
+
+    ;
+
+    if (!window.performance.mark) {
+      window.performance.mark = window.performance.webkitMark || function (name) {
+        var mark = {
+          name: name,
+          entryType: "mark",
+          startTime: window.performance.now(),
+          duration: 0
+        };
+
+        _entries.push(mark);
+        _marksIndex[name] = mark;
       };
-    })();
-  }
+    }
 
-  _PLATFORM.performance = window.performance;
+    if (!window.performance.measure) {
+      window.performance.measure = window.performance.webkitMeasure || function (name, startMark, endMark) {
+        startMark = _marksIndex[startMark].startTime;
+        endMark = _marksIndex[endMark].startTime;
+
+        _entries.push({
+          name: name,
+          entryType: "measure",
+          startTime: startMark,
+          duration: endMark - startMark
+        });
+      };
+    }
+
+    if (!window.performance.getEntriesByType) {
+      window.performance.getEntriesByType = window.performance.webkitGetEntriesByType || function (type) {
+        return _filterEntries("entryType", type);
+      };
+    }
+
+    if (!window.performance.getEntriesByName) {
+      window.performance.getEntriesByName = window.performance.webkitGetEntriesByName || function (name) {
+        return _filterEntries("name", name);
+      };
+    }
+
+    if (!window.performance.clearMarks) {
+      window.performance.clearMarks = window.performance.webkitClearMarks || function (name) {
+        _clearEntries("mark", name);
+      };
+    }
+
+    if (!window.performance.clearMeasures) {
+      window.performance.clearMeasures = window.performance.webkitClearMeasures || function (name) {
+        _clearEntries("measure", name);
+      };
+    }
+
+    _PLATFORM.performance = window.performance;
+  })();
 }
 
 if (typeof FEATURE_NO_IE === 'undefined') {
