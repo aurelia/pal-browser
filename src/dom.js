@@ -1,4 +1,4 @@
-import {_FEATURE} from './feature';
+import { _FEATURE } from './feature';
 
 let shadowPoly = window.ShadowDOMPolyfill || null;
 
@@ -10,14 +10,14 @@ export const _DOM = {
   NodeList: NodeList,
   SVGElement: SVGElement,
   boundary: 'aurelia-dom-boundary',
-  addEventListener(eventName: string, callback: Function, capture?: boolean): void {
+  addEventListener(eventName: string, callback: EventListenerOrEventListenerObject, capture?: boolean): void {
     document.addEventListener(eventName, callback, capture);
   },
-  removeEventListener(eventName: string, callback: Function, capture?: boolean): void {
+  removeEventListener(eventName: string, callback: EventListenerOrEventListenerObject, capture?: boolean): void {
     document.removeEventListener(eventName, callback, capture);
   },
   adoptNode(node: Node) {
-    return document.adoptNode(node, true);//TODO: what is does the true mean? typo?
+    return document.adoptNode(node);
   },
   createAttribute(name: string): Attr {
     return document.createAttribute(name);
@@ -41,7 +41,7 @@ export const _DOM = {
   createMutationObserver(callback: Function): MutationObserver {
     return new (window.MutationObserver || window.WebKitMutationObserver)(callback);
   },
-  createCustomEvent(eventType: string, options: Object): CustomEvent {
+  createCustomEvent<T = any>(eventType: string, options?: CustomEventInit<T>): CustomEvent<T> {
     return new window.CustomEvent(eventType, options);
   },
   dispatchEvent(evt): void {
@@ -53,6 +53,9 @@ export const _DOM = {
   getElementById(id: string): Element {
     return document.getElementById(id);
   },
+  querySelector(query: string) {
+    return document.querySelector(query);
+  },
   querySelectorAll(query: string) {
     return document.querySelectorAll(query);
   },
@@ -62,7 +65,7 @@ export const _DOM = {
     while (element && element.nodeType !== 1);
     return element;
   },
-  createTemplateFromMarkup(markup: string): Element {
+  createTemplateFromMarkup(markup: string): HTMLTemplateElement {
     let parser = document.createElement('div');
     parser.innerHTML = markup;
 
@@ -83,7 +86,7 @@ export const _DOM = {
       shadowPoly.unwrap(parentNode).replaceChild(
         shadowPoly.unwrap(newNode),
         shadowPoly.unwrap(node)
-        );
+      );
     } else { //HACK: same as above
       parentNode.replaceChild(newNode, node);
     }
