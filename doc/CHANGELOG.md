@@ -1,3 +1,10 @@
+<a name="1.8.0"></a>
+# [1.8.0](https://github.com/aurelia/pal-browser/compare/1.7.0...1.8.0) (2018-04-17)
+
+### Features
+
+* Updated to support new PAL methods and typings.
+
 <a name="1.7.0"></a>
 # [1.7.0](https://github.com/aurelia/pal-browser/compare/1.6.0...v1.7.0) (2018-03-06)
 

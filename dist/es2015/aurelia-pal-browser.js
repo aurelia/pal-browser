@@ -413,7 +413,7 @@ export const _DOM = {
     document.removeEventListener(eventName, callback, capture);
   },
   adoptNode(node) {
-    return document.adoptNode(node, true);
+    return document.adoptNode(node);
   },
   createAttribute(name) {
     return document.createAttribute(name);
@@ -448,6 +448,9 @@ export const _DOM = {
   },
   getElementById(id) {
     return document.getElementById(id);
+  },
+  querySelector(query) {
+    return document.querySelector(query);
   },
   querySelectorAll(query) {
     return document.querySelectorAll(query);

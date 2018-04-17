@@ -3,7 +3,7 @@
 System.register(['aurelia-pal'], function (_export, _context) {
   "use strict";
 
-  var initializePAL, isInitialized, _typeof, _PLATFORM, test, testElement, createMethod, _CustomEvent, proto, _FEATURE, shadowPoly, _DOM;
+  var initializePAL, isInitialized, _typeof, _PLATFORM, test, protoProp, strTrim, arrIndexOf, emptyArray, DOMEx, checkTokenAndGetIndex, ClassList, classListProto, testElement, createMethod, _toggle, _filterEntries, _clearEntries, nowOffset, startOffset, _entries, _marksIndex, con, nop, _CustomEvent, proto, _FEATURE, isSVGTemplate, fixSVGTemplateElement, fixHTMLTemplateElement, fixHTMLTemplateElementRoot, shadowPoly, _DOM;
 
   function initialize() {
     if (isInitialized) {
@@ -87,128 +87,126 @@ System.register(['aurelia-pal'], function (_export, _context) {
 
       if (typeof FEATURE_NO_IE === 'undefined') {
         if (!('classList' in document.createElement('_')) || document.createElementNS && !('classList' in document.createElementNS('http://www.w3.org/2000/svg', 'g'))) {
-          (function () {
-            var protoProp = 'prototype';
-            var strTrim = String.prototype.trim;
-            var arrIndexOf = Array.prototype.indexOf;
-            var emptyArray = [];
+          protoProp = 'prototype';
+          strTrim = String.prototype.trim;
+          arrIndexOf = Array.prototype.indexOf;
+          emptyArray = [];
 
-            var DOMEx = function DOMEx(type, message) {
-              this.name = type;
-              this.code = DOMException[type];
-              this.message = message;
+          DOMEx = function DOMEx(type, message) {
+            this.name = type;
+            this.code = DOMException[type];
+            this.message = message;
+          };
+
+          checkTokenAndGetIndex = function checkTokenAndGetIndex(classList, token) {
+            if (token === '') {
+              throw new DOMEx('SYNTAX_ERR', 'An invalid or illegal string was specified');
+            }
+
+            if (/\s/.test(token)) {
+              throw new DOMEx('INVALID_CHARACTER_ERR', 'String contains an invalid character');
+            }
+
+            return arrIndexOf.call(classList, token);
+          };
+
+          ClassList = function ClassList(elem) {
+            var trimmedClasses = strTrim.call(elem.getAttribute('class') || '');
+            var classes = trimmedClasses ? trimmedClasses.split(/\s+/) : emptyArray;
+
+            for (var i = 0, ii = classes.length; i < ii; ++i) {
+              this.push(classes[i]);
+            }
+
+            this._updateClassName = function () {
+              elem.setAttribute('class', this.toString());
             };
+          };
 
-            var checkTokenAndGetIndex = function checkTokenAndGetIndex(classList, token) {
-              if (token === '') {
-                throw new DOMEx('SYNTAX_ERR', 'An invalid or illegal string was specified');
+          classListProto = ClassList[protoProp] = [];
+
+          DOMEx[protoProp] = Error[protoProp];
+
+          classListProto.item = function (i) {
+            return this[i] || null;
+          };
+
+          classListProto.contains = function (token) {
+            token += '';
+            return checkTokenAndGetIndex(this, token) !== -1;
+          };
+
+          classListProto.add = function () {
+            var tokens = arguments;
+            var i = 0;
+            var ii = tokens.length;
+            var token = void 0;
+            var updated = false;
+
+            do {
+              token = tokens[i] + '';
+              if (checkTokenAndGetIndex(this, token) === -1) {
+                this.push(token);
+                updated = true;
               }
+            } while (++i < ii);
 
-              if (/\s/.test(token)) {
-                throw new DOMEx('INVALID_CHARACTER_ERR', 'String contains an invalid character');
-              }
+            if (updated) {
+              this._updateClassName();
+            }
+          };
 
-              return arrIndexOf.call(classList, token);
-            };
+          classListProto.remove = function () {
+            var tokens = arguments;
+            var i = 0;
+            var ii = tokens.length;
+            var token = void 0;
+            var updated = false;
+            var index = void 0;
 
-            var ClassList = function ClassList(elem) {
-              var trimmedClasses = strTrim.call(elem.getAttribute('class') || '');
-              var classes = trimmedClasses ? trimmedClasses.split(/\s+/) : emptyArray;
-
-              for (var i = 0, ii = classes.length; i < ii; ++i) {
-                this.push(classes[i]);
-              }
-
-              this._updateClassName = function () {
-                elem.setAttribute('class', this.toString());
-              };
-            };
-
-            var classListProto = ClassList[protoProp] = [];
-
-            DOMEx[protoProp] = Error[protoProp];
-
-            classListProto.item = function (i) {
-              return this[i] || null;
-            };
-
-            classListProto.contains = function (token) {
-              token += '';
-              return checkTokenAndGetIndex(this, token) !== -1;
-            };
-
-            classListProto.add = function () {
-              var tokens = arguments;
-              var i = 0;
-              var ii = tokens.length;
-              var token = void 0;
-              var updated = false;
-
-              do {
-                token = tokens[i] + '';
-                if (checkTokenAndGetIndex(this, token) === -1) {
-                  this.push(token);
-                  updated = true;
-                }
-              } while (++i < ii);
-
-              if (updated) {
-                this._updateClassName();
-              }
-            };
-
-            classListProto.remove = function () {
-              var tokens = arguments;
-              var i = 0;
-              var ii = tokens.length;
-              var token = void 0;
-              var updated = false;
-              var index = void 0;
-
-              do {
-                token = tokens[i] + '';
+            do {
+              token = tokens[i] + '';
+              index = checkTokenAndGetIndex(this, token);
+              while (index !== -1) {
+                this.splice(index, 1);
+                updated = true;
                 index = checkTokenAndGetIndex(this, token);
-                while (index !== -1) {
-                  this.splice(index, 1);
-                  updated = true;
-                  index = checkTokenAndGetIndex(this, token);
-                }
-              } while (++i < ii);
-
-              if (updated) {
-                this._updateClassName();
               }
-            };
+            } while (++i < ii);
 
-            classListProto.toggle = function (token, force) {
-              token += '';
+            if (updated) {
+              this._updateClassName();
+            }
+          };
 
-              var result = this.contains(token);
-              var method = result ? force !== true && 'remove' : force !== false && 'add';
+          classListProto.toggle = function (token, force) {
+            token += '';
 
-              if (method) {
-                this[method](token);
-              }
+            var result = this.contains(token);
+            var method = result ? force !== true && 'remove' : force !== false && 'add';
 
-              if (force === true || force === false) {
-                return force;
-              }
+            if (method) {
+              this[method](token);
+            }
 
-              return !result;
-            };
+            if (force === true || force === false) {
+              return force;
+            }
 
-            classListProto.toString = function () {
-              return this.join(' ');
-            };
+            return !result;
+          };
 
-            Object.defineProperty(Element.prototype, 'classList', {
-              get: function get() {
-                return new ClassList(this);
-              },
-              enumerable: true,
-              configurable: true
-            });
-          })();
+          classListProto.toString = function () {
+            return this.join(' ');
+          };
+
+          Object.defineProperty(Element.prototype, 'classList', {
+            get: function get() {
+              return new ClassList(this);
+            },
+            enumerable: true,
+            configurable: true
+          });
         } else {
           testElement = document.createElement('_');
 
@@ -233,17 +231,16 @@ System.register(['aurelia-pal'], function (_export, _context) {
           testElement.classList.toggle('c3', false);
 
           if (testElement.classList.contains('c3')) {
-            (function () {
-              var _toggle = DOMTokenList.prototype.toggle;
+            _toggle = DOMTokenList.prototype.toggle;
 
-              DOMTokenList.prototype.toggle = function (token, force) {
-                if (1 in arguments && !this.contains(token) === !force) {
-                  return force;
-                }
 
-                return _toggle.call(this, token);
-              };
-            })();
+            DOMTokenList.prototype.toggle = function (token, force) {
+              if (1 in arguments && !this.contains(token) === !force) {
+                return force;
+              }
+
+              return _toggle.call(this, token);
+            };
           }
 
           testElement = null;
@@ -251,127 +248,122 @@ System.register(['aurelia-pal'], function (_export, _context) {
       }
 
       if (typeof FEATURE_NO_IE === 'undefined') {
-        (function () {
-          var _filterEntries = function _filterEntries(key, value) {
-            var i = 0,
-                n = _entries.length,
-                result = [];
-            for (; i < n; i++) {
-              if (_entries[i][key] == value) {
-                result.push(_entries[i]);
-              }
+        _filterEntries = function _filterEntries(key, value) {
+          var i = 0,
+              n = _entries.length,
+              result = [];
+          for (; i < n; i++) {
+            if (_entries[i][key] == value) {
+              result.push(_entries[i]);
             }
-            return result;
-          };
+          }
+          return result;
+        };
 
-          var _clearEntries = function _clearEntries(type, name) {
-            var i = _entries.length,
-                entry;
-            while (i--) {
-              entry = _entries[i];
-              if (entry.entryType == type && (name === void 0 || entry.name == name)) {
-                _entries.splice(i, 1);
-              }
+        _clearEntries = function _clearEntries(type, name) {
+          var i = _entries.length,
+              entry;
+          while (i--) {
+            entry = _entries[i];
+            if (entry.entryType == type && (name === void 0 || entry.name == name)) {
+              _entries.splice(i, 1);
             }
+          }
+        };
+
+        // @license http://opensource.org/licenses/MIT
+        if ('performance' in window === false) {
+          window.performance = {};
+        }
+
+        if ('now' in window.performance === false) {
+          nowOffset = Date.now();
+
+
+          if (performance.timing && performance.timing.navigationStart) {
+            nowOffset = performance.timing.navigationStart;
+          }
+
+          window.performance.now = function now() {
+            return Date.now() - nowOffset;
           };
+        }
 
-          // @license http://opensource.org/licenses/MIT
-          if ('performance' in window === false) {
-            window.performance = {};
-          }
+        startOffset = Date.now ? Date.now() : +new Date();
+        _entries = [];
+        _marksIndex = {};
+        ;
 
-          if ('now' in window.performance === false) {
-            (function () {
-              var nowOffset = Date.now();
-
-              if (performance.timing && performance.timing.navigationStart) {
-                nowOffset = performance.timing.navigationStart;
-              }
-
-              window.performance.now = function now() {
-                return Date.now() - nowOffset;
-              };
-            })();
-          }
-
-          var startOffset = Date.now ? Date.now() : +new Date();
-          var _entries = [];
-          var _marksIndex = {};
-
-          ;
-
-          if (!window.performance.mark) {
-            window.performance.mark = window.performance.webkitMark || function (name) {
-              var mark = {
-                name: name,
-                entryType: "mark",
-                startTime: window.performance.now(),
-                duration: 0
-              };
-
-              _entries.push(mark);
-              _marksIndex[name] = mark;
+        if (!window.performance.mark) {
+          window.performance.mark = window.performance.webkitMark || function (name) {
+            var mark = {
+              name: name,
+              entryType: "mark",
+              startTime: window.performance.now(),
+              duration: 0
             };
-          }
 
-          if (!window.performance.measure) {
-            window.performance.measure = window.performance.webkitMeasure || function (name, startMark, endMark) {
-              startMark = _marksIndex[startMark].startTime;
-              endMark = _marksIndex[endMark].startTime;
+            _entries.push(mark);
+            _marksIndex[name] = mark;
+          };
+        }
 
-              _entries.push({
-                name: name,
-                entryType: "measure",
-                startTime: startMark,
-                duration: endMark - startMark
-              });
-            };
-          }
+        if (!window.performance.measure) {
+          window.performance.measure = window.performance.webkitMeasure || function (name, startMark, endMark) {
+            startMark = _marksIndex[startMark].startTime;
+            endMark = _marksIndex[endMark].startTime;
 
-          if (!window.performance.getEntriesByType) {
-            window.performance.getEntriesByType = window.performance.webkitGetEntriesByType || function (type) {
-              return _filterEntries("entryType", type);
-            };
-          }
+            _entries.push({
+              name: name,
+              entryType: "measure",
+              startTime: startMark,
+              duration: endMark - startMark
+            });
+          };
+        }
 
-          if (!window.performance.getEntriesByName) {
-            window.performance.getEntriesByName = window.performance.webkitGetEntriesByName || function (name) {
-              return _filterEntries("name", name);
-            };
-          }
+        if (!window.performance.getEntriesByType) {
+          window.performance.getEntriesByType = window.performance.webkitGetEntriesByType || function (type) {
+            return _filterEntries("entryType", type);
+          };
+        }
 
-          if (!window.performance.clearMarks) {
-            window.performance.clearMarks = window.performance.webkitClearMarks || function (name) {
-              _clearEntries("mark", name);
-            };
-          }
+        if (!window.performance.getEntriesByName) {
+          window.performance.getEntriesByName = window.performance.webkitGetEntriesByName || function (name) {
+            return _filterEntries("name", name);
+          };
+        }
 
-          if (!window.performance.clearMeasures) {
-            window.performance.clearMeasures = window.performance.webkitClearMeasures || function (name) {
-              _clearEntries("measure", name);
-            };
-          }
+        if (!window.performance.clearMarks) {
+          window.performance.clearMarks = window.performance.webkitClearMarks || function (name) {
+            _clearEntries("mark", name);
+          };
+        }
 
-          _PLATFORM.performance = window.performance;
-        })();
+        if (!window.performance.clearMeasures) {
+          window.performance.clearMeasures = window.performance.webkitClearMeasures || function (name) {
+            _clearEntries("measure", name);
+          };
+        }
+
+        _PLATFORM.performance = window.performance;
       }
 
       if (typeof FEATURE_NO_IE === 'undefined') {
-        (function () {
-          var con = window.console = window.console || {};
-          var nop = function nop() {};
+        con = window.console = window.console || {};
 
-          if (!con.memory) con.memory = {};
-          ('assert,clear,count,debug,dir,dirxml,error,exception,group,' + 'groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd,' + 'show,table,time,timeEnd,timeline,timelineEnd,timeStamp,trace,warn').split(',').forEach(function (m) {
-            if (!con[m]) con[m] = nop;
-          });
+        nop = function nop() {};
 
-          if (_typeof(con.log) === 'object') {
-            'log,info,warn,error,assert,dir,clear,profile,profileEnd'.split(',').forEach(function (method) {
-              console[method] = this.bind(console[method], console);
-            }, Function.prototype.call);
-          }
-        })();
+        if (!con.memory) con.memory = {};
+        ('assert,clear,count,debug,dir,dirxml,error,exception,group,' + 'groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd,' + 'show,table,time,timeEnd,timeline,timelineEnd,timeStamp,trace,warn').split(',').forEach(function (m) {
+          if (!con[m]) con[m] = nop;
+        });
+
+        if (_typeof(con.log) === 'object') {
+          'log,info,warn,error,assert,dir,clear,profile,profileEnd'.split(',').forEach(function (method) {
+            console[method] = this.bind(console[method], console);
+          }, Function.prototype.call);
+        }
       }
 
       if (typeof FEATURE_NO_IE === 'undefined') {
@@ -416,62 +408,60 @@ System.register(['aurelia-pal'], function (_export, _context) {
       _export('_FEATURE', _FEATURE);
 
       if (typeof FEATURE_NO_IE === 'undefined') {
-        (function () {
-          var isSVGTemplate = function isSVGTemplate(el) {
-            return el.tagName === 'template' && el.namespaceURI === 'http://www.w3.org/2000/svg';
-          };
+        isSVGTemplate = function isSVGTemplate(el) {
+          return el.tagName === 'template' && el.namespaceURI === 'http://www.w3.org/2000/svg';
+        };
 
-          var fixSVGTemplateElement = function fixSVGTemplateElement(el) {
-            var template = el.ownerDocument.createElement('template');
-            var attrs = el.attributes;
-            var length = attrs.length;
-            var attr = void 0;
+        fixSVGTemplateElement = function fixSVGTemplateElement(el) {
+          var template = el.ownerDocument.createElement('template');
+          var attrs = el.attributes;
+          var length = attrs.length;
+          var attr = void 0;
 
-            el.parentNode.insertBefore(template, el);
+          el.parentNode.insertBefore(template, el);
 
-            while (length-- > 0) {
-              attr = attrs[length];
-              template.setAttribute(attr.name, attr.value);
-              el.removeAttribute(attr.name);
-            }
-
-            el.parentNode.removeChild(el);
-
-            return fixHTMLTemplateElement(template);
-          };
-
-          var fixHTMLTemplateElement = function fixHTMLTemplateElement(template) {
-            var content = template.content = document.createDocumentFragment();
-            var child = void 0;
-
-            while (child = template.firstChild) {
-              content.appendChild(child);
-            }
-
-            return template;
-          };
-
-          var fixHTMLTemplateElementRoot = function fixHTMLTemplateElementRoot(template) {
-            var content = fixHTMLTemplateElement(template).content;
-            var childTemplates = content.querySelectorAll('template');
-
-            for (var i = 0, ii = childTemplates.length; i < ii; ++i) {
-              var child = childTemplates[i];
-
-              if (isSVGTemplate(child)) {
-                fixSVGTemplateElement(child);
-              } else {
-                fixHTMLTemplateElement(child);
-              }
-            }
-
-            return template;
-          };
-
-          if (!_FEATURE.htmlTemplateElement) {
-            _FEATURE.ensureHTMLTemplateElement = fixHTMLTemplateElementRoot;
+          while (length-- > 0) {
+            attr = attrs[length];
+            template.setAttribute(attr.name, attr.value);
+            el.removeAttribute(attr.name);
           }
-        })();
+
+          el.parentNode.removeChild(el);
+
+          return fixHTMLTemplateElement(template);
+        };
+
+        fixHTMLTemplateElement = function fixHTMLTemplateElement(template) {
+          var content = template.content = document.createDocumentFragment();
+          var child = void 0;
+
+          while (child = template.firstChild) {
+            content.appendChild(child);
+          }
+
+          return template;
+        };
+
+        fixHTMLTemplateElementRoot = function fixHTMLTemplateElementRoot(template) {
+          var content = fixHTMLTemplateElement(template).content;
+          var childTemplates = content.querySelectorAll('template');
+
+          for (var i = 0, ii = childTemplates.length; i < ii; ++i) {
+            var child = childTemplates[i];
+
+            if (isSVGTemplate(child)) {
+              fixSVGTemplateElement(child);
+            } else {
+              fixHTMLTemplateElement(child);
+            }
+          }
+
+          return template;
+        };
+
+        if (!_FEATURE.htmlTemplateElement) {
+          _FEATURE.ensureHTMLTemplateElement = fixHTMLTemplateElementRoot;
+        }
       }
 
       shadowPoly = window.ShadowDOMPolyfill || null;
@@ -488,7 +478,7 @@ System.register(['aurelia-pal'], function (_export, _context) {
           document.removeEventListener(eventName, callback, capture);
         },
         adoptNode: function adoptNode(node) {
-          return document.adoptNode(node, true);
+          return document.adoptNode(node);
         },
         createAttribute: function createAttribute(name) {
           return document.createAttribute(name);
@@ -523,6 +513,9 @@ System.register(['aurelia-pal'], function (_export, _context) {
         },
         getElementById: function getElementById(id) {
           return document.getElementById(id);
+        },
+        querySelector: function querySelector(query) {
+          return document.querySelector(query);
         },
         querySelectorAll: function querySelectorAll(query) {
           return document.querySelectorAll(query);
