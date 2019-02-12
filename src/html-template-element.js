@@ -3,7 +3,7 @@ import {_FEATURE} from './feature';
 if (typeof FEATURE_NO_IE === 'undefined') {
   function isSVGTemplate(el) {
     return el.tagName === 'template' &&
-           el.namespaceURI === 'http://www.w3.org/2000/svg';
+      el.namespaceURI === 'http://www.w3.org/2000/svg';
   }
 
   function fixSVGTemplateElement(el) {
@@ -36,9 +36,42 @@ if (typeof FEATURE_NO_IE === 'undefined') {
     return template;
   }
 
+  // replaces a #document-fragment .cloneNode
+  function __safeCloneNode(deep) {
+    const clone = this.standardCloneNode(deep);
+    if (deep) {
+      if (!this.__templates) {
+        // cache child templates on first call
+        // fix child templates on first call
+        this.__templates = this.querySelectorAll('template');
+        let i = this.__templates.length;
+        while (i--) {
+          installSafeCloneNode(this.__templates.item(i));
+        }
+      }
+      if (this.__templates.length) {
+        const clonedTemplates = clone.querySelectorAll('template');
+        let i = clonedTemplates.length;
+        while (i--) {
+          clonedTemplates.item(i).content = this.__templates.item(i).content;
+        }
+      }
+    }
+    return clone;
+  }
+
+  function installSafeCloneNode(template) {
+    if (!template.content.__safeToCloneNode) {
+      template.content.standardCloneNode = template.content.cloneNode;
+      template.content.cloneNode = __safeCloneNode;
+      template.content.__safeToCloneNode = true;
+    }
+    return template;
+  }
+
   function fixHTMLTemplateElementRoot(template) {
-    let content = fixHTMLTemplateElement(template).content;
-    let childTemplates = content.querySelectorAll('template');
+    const content = fixHTMLTemplateElement(template).content;
+    const childTemplates = content.querySelectorAll('template');
 
     for (let i = 0, ii = childTemplates.length; i < ii; ++i) {
       let child = childTemplates[i];
@@ -48,7 +81,10 @@ if (typeof FEATURE_NO_IE === 'undefined') {
       } else {
         fixHTMLTemplateElement(child);
       }
+      // installSafeCloneNode(child);
     }
+
+    installSafeCloneNode(template);
 
     return template;
   }
