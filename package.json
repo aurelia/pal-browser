@@ -13,7 +13,7 @@
   "license": "MIT",
   "author": "Rob Eisenberg <rob@bluespire.com> (http://robeisenberg.com/)",
   "main": "dist/commonjs/aurelia-pal-browser.js",
-  "module": "dist/es2015/aurelia-pal-browser.js",
+  "module": "dist/native-modules/aurelia-pal-browser.js",
   "typings": "dist/aurelia-pal-browser.d.ts",
   "repository": {
     "type": "git",
@@ -70,6 +70,7 @@
     "gulp-typedoc-extractor": "^0.0.8",
     "gulp-typescript": "^2.13.6",
     "gulp-util": "^3.0.7",
+    "jspm": "^0.16.55",
     "jasmine-core": "^2.4.1",
     "karma": "^1.1.2",
     "karma-babel-preprocessor": "^6.0.1",
